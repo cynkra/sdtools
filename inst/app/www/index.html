@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <!-- No Google, for now -->
+    <!-- <meta name="robots" content="noindex,nofollow"> -->
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Switzerland's data series in one place</title>
+
+    <meta name="description" content="A collection of up-to-date time-series for Switzerland: GDP, Consumer Price Index, EUR/CHF, Exports and Imports, Unemployment, Population, Employment, and much more.">
+    <meta name="author" content="Christoph Sax">
+
+    <link href="assets/css/toolkit.css" rel="stylesheet">
+    <link href="assets/css/application.css" rel="stylesheet">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
+    <script src="shared/shiny.js"></script>
+
+    <script src="js/shinyIDCallback.js"></script>
+    <script src="js/shinySelectCallback.js"></script>
+    <script src="js/shinySplitMenu.js"></script>
+
+    <script src="js/selectize.min.js"></script>
+    <link href="css/fontdocs2.css" rel="stylesheet">
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.1/css/selectize.bootstrap3.min.css" rel="stylesheet">
+
+
+</head>
+
+<link href="css/docs3.css" rel="stylesheet">
+
+<body id="mainbody" class="with-top-navbar">
+
+<nav class="navbar navbar-fixed-top app-navbar">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="init-hidden navbar-toggle collapsed" style="visibility: hidden" data-toggle="collapse" data-target="#navbar-collapse-main">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="nav-collection tag-collection btn-tag btn-xs btn-tag-danger" style="display:none">5</span>
+                <span class="icon icon-menu"></span></span>
+
+
+            </button>
+            <a class="navbar-brand" href="/">
+                <strong>data</strong><span style = "font-size:5px;"> </span>series.org
+                <span class="btn-tag btn-tag-warning btn-xs">alpha</span>
+            </a>
+        </div>
+
+        <div id="navbar-collapse-main" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right m-r-0">
+
+
+                        <li class = "init-hidden" style="visibility: hidden">
+                        <a data-toggle="modal" data-target="#modal-embed" data-container="body">
+              <span style="color: #5DA5DA; font-size: 11px; font-weight: bold;margin-right: 2px;">NEW</span>
+
+
+                 <!--          <span class="btn-tag btn-xs btn-tag-info" style="margin-right: 2px;">new</span> -->
+
+                           Embed
+                        </a>  
+
+                        <li class = "init-hidden" style="visibility: hidden">
+    
+                        <a data-container="body" data-toggle="modal" data-target="#modal-url" >
+<!--                         <span  style = "padding-right: 5px;" class="icon icon-camera"> </span> 
+ -->                        Share
+                        </a>
+                        </li>
+      
+                        </li>
+
+                        <li class="divider"></li>
+                        <li class = "init-hidden" style="visibility: hidden">
+                        <a data-toggle="modal" data-target="#modal-export-graph" data-container="body">
+<!--                           <span style = "padding-right: 5px;" class="icon icon-cog"> </span>
+ -->                          Import to R
+                        </a>        
+                        </li>
+
+
+                        <li class = "init-hidden" style="visibility: hidden">
+                          <a data-container="body" type="button" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+<!--                           <span style = "padding-right: 5px;" class="icon icon-download"></span>
+ -->                           Download
+                          </a>
+
+                          <ul class="dropdown-menu">
+
+
+
+                            <li><a id="oDownloadGraphXlsx" class="shiny-download-link" target="_blank">Data as XLSX</a></li>
+                            <li><a id="oDownloadGraphCsv" class="shiny-download-link" target="_blank">Data as CSV</a></li>
+                            <li class="divider"></li>
+                            <li><a id="oDownloadPdf" class="shiny-download-link" target="_blank">Graphic as PDF</a></li>
+                            <li><a id="oDownloadSvg" class="shiny-download-link" target="_blank">Graphic as SVG</a></li>
+                            <li><a id="oDownloadPng" class="shiny-download-link" target="_blank">Graphic as PNG (bitmap)</a></li>
+                          </ul>
+                        </li>
+
+
+
+                                    <li style = "cursor: pointer;">
+              <a data-toggle="modal" data-target="#modal-info">Welcome!</a>
+            </li>
+
+            <li class = "nav-collection" style="display:none;">
+              <a data-toggle="modal" data-target="#modal-collection"><span class="icon icon-attachment" style = "padding-right: 8px;"></span><span  class="tag-collection btn-tag btn-xs btn-tag-danger";>5</span></a>
+            </li>
+
+
+
+
+          </ul>
+        </div>
+    </div>
+</nav>
+
+
+<!-- read the number of series in stack from server -->
+<script type="text/javascript">
+
+Shiny.addCustomMessageHandler("cmLengthStack",
+  function(lsid) {
+    if (lsid > 0) {
+      $('.nav-collection').css('display', 'inline');
+      $('.tag-collection').text(lsid);
+    } else {
+      // hide menu and modal (but not on start)
+      if ($('#modal-collection').hasClass('in')){
+        $('.nav-collection').css('display', 'none');
+        $('#modal-collection').modal('toggle');
+      }
+    }
+  }
+);
+
+
+// text select on click in modals
+function selectText(containerid) {
+    var node = document.getElementById( containerid );
+
+    if ( document.selection ) {
+        var range = document.body.createTextRange();
+        range.moveToElementText( node  );
+        range.select();
+    } else if ( window.getSelection ) {
+        var range = document.createRange();
+        range.selectNodeContents( node );
+        window.getSelection().removeAllRanges();
+        window.getSelection().addRange( range );
+        node.style.borderColor = "#66afe9";
+    }
+}
+
+Shiny.addCustomMessageHandler("rUrlString",
+  function(url) {
+    history.pushState(null, null, url);
+    // alert(url)
+  });
+
+</script>
+
+
+<div class="modal fade" id="modal-collection" tabindex="-1" role="dialog" aria-labelledby="modal-collection" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+
+
+        <div style = "margin-left: 5px; margin-bottom: 5px;" class="btn-group pull-right" role="group" aria-label="Basic example">
+            <a id="oDownloadStackCsv" type="button" class="btn btn-sm btn-primary-outline shiny-download-link">
+              <span class="icon icon-spreadsheet"></span> CSV
+            </a>
+            <a id="oDownloadStackXlsx" type="button" class="btn btn-sm btn-primary-outline shiny-download-link">
+              <span class="icon icon-windows-store"></span> XLSX</a>
+
+
+        </div>
+
+<div style = "margin-left: 5px; margin-bottom: 5px;" class="btn-group pull-right" role="group" aria-label="Basic example">
+                      <a type="button" class="btn btn-sm btn-default-outline pull-right" data-toggle="modal" data-target="#modal-export-stack"><span class="icon icon-keyboard"></span> Import to R
+                      </a>
+</div>
+
+        <h4 class="modal-title"><span class="icon icon-attachment"> Collected Series</h4>
+
+      </div>
+
+      <div class="modal-body p-a-0 js-modalBody">
+        <div class="modal-body-scroller">
+          <div class="media-list media-list-users list-group js-msgGroup">
+            <div id="oStack" class="shiny-html-output"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+
+        <button id="iStackReset" type="button" class="btn btn-sm btn-default action-button"><span class="icon icon-trash"></span> Remove All</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+<div class="modal fade in" id="modal-info" tabindex="-1" role="dialog" aria-labelledby="modal-welcome">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+
+    
+
+        <!-- <h4 class="modal-title"><span class="icon icon-attachment"> Welcome</h4> -->
+
+
+            <div class="modal-body">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <h4>Welcome!</h4>
+                <!-- <h2>Welcome!</h2> -->
+                <p>Hi, I am <a href="http://www.christophsax.com" target="_blank">Christoph</a>, and I wrote this website to end <strong>my lifelong struggle</strong> with Swiss public data.
+                </p>
+                <div class="media">
+                    <span class="media-left">
+                      <span class="icon icon-lg icon-documents"></span>
+                    </span>
+                    <div class="media-body modal-media">
+                        <p>It provides a structured collection of most of the relevant data series for Switzerland, <strong>automatically updated from various sources</strong>: GDP, CPI, Exports and Imports, Population, Employment, and much more. 
+                        We are still working on the data input, but are pretty much <strong>complete in the field of Economics</strong>.
+                        </p>
+                    </div>
+                </div>
+                <div class="media">
+                    <span class="media-left">
+                      <span class="icon icon-lg icon-star"></span>
+                    </span>
+                    <div class="media-body modal-media">
+                        <p>It shows the data series in a unified interface that starts with <strong>the series you were looking for 80% of the time</strong>, and gives you all details the rest of the time.</p>
+                    </div>
+                </div>
+
+                <div class="media">
+                    <span class="media-left">
+                      <span class="icon icon-lg icon-share-alternative"></span>
+                    </span>
+                    <div class="media-body modal-media">
+                        <p>You can export everything. Whatever you find interesting, you can download, as a graph or as a table. And <strong>you can import everything into R</strong>, using the new dataseries package. Other Software is coming.</p>
+                    </div>
+                </div>
+                <div class="media">
+                    <span class="media-left">
+                      <span class="icon icon-lg icon-camera"></span>
+                    </span>
+                    <div class="media-body modal-media">
+                        <p>The save-and-share feature allows you to <strong>save the current view and share it</strong> with others, using a stable URL with parameters.</p>
+                    </div>
+                </div>
+                <div class="media">
+                    <span class="media-left">
+                      <a href="https://www.facebook.com/dataseries.org/"><span class="icon icon-lg icon-facebook"></span></a>
+                    </span>
+                    <div class="media-body modal-media">
+                        <p>What do you think? Do you find it useful? Would you like see a particular feature? Please <a href="mailto:christoph@christophsax.com?subject=dataseries.org">let me know</a>. And if you like it, like it on <a href="https://www.facebook.com/dataseries.org/">Facebook</a>. Or even better: <strong>Share it!</strong> Thanks!</p>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+
+                <a href="mailto:christoph@christophsax.com?subject=dataseries.org" type="button" class="btn btn-sm btn-primary-outline">Feedback</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- modal: embed -->
+<div class="modal fade in" id="modal-embed" tabindex="-1" role="dialog" aria-labelledby="modal-embed"">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h3><span class="icon icon-code" style="padding-right: 10px;"></span>Embed in Your Own Website</h3>
+          <p>Use the following code to emedd the current graph in <strong>your website</strong>, using <a href = "https://www.w3schools.com/html/html_iframe.asp">iframes</a>. Because the data is part of the code, the interactive graph will have <strong>no dependency</strong> on this website.
+          </p>
+
+          <h4>Preview</h4>
+          <div id="oEmbedExample" class="shiny-html-output init-hidden"> </div>
+
+          <h4>Code</h4>
+          <pre onClick="selectText('oEmbed');" id="oEmbed" class="cp-box shiny-html-output init-hidden"> </pre>
+
+
+          <br>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- modal: save and share -->
+<div class="modal fade in" id="modal-url" tabindex="-1" role="dialog" aria-labelledby="modal-save-and-share">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4><span class="icon icon-camera" style="padding-right: 10px;"></span>Save and Share</h4>
+          <p>Use the following stable link to <strong>save the current view</strong> or to <strong>share it</strong> with friends:
+          </p>
+
+
+          <pre onClick="selectText('oUrl');" id="oUrl" class="cp-box shiny-html-output init-hidden"> </pre>
+
+
+          <br>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade in" id="modal-export-graph" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+                <h4><span class="icon icon-keyboard" style="padding-right: 10px;"></span>Import Data to R</h4>
+
+<p>With the <a href="https://github.com/christophsax/dataseries">dataseries</a> R package, you can <strong>directly use the data in R</strong>.</p>
+
+<p>To install from <a href="https://CRAN.R-project.org/package=dataseries">CRAN</a>:</p>
+
+<pre onClick="selectText('oRCodeGraph0');" id="oRCodeGraph0" class="cp-box"><code>install.packages("dataseries")
+</code></pre>
+
+<p>To get the <strong>visible series</strong> into R:</p>
+
+        <pre onClick="selectText('oRCodeGraph');" id="oRCodeGraph" class="cp-box shiny-html-output init-hidden"> </pre>
+
+<!-- <pre id="oRCodeGraph" class="shiny-html-output"> </pre> -->
+          </div>
+      </div>
+  </div>
+</div>
+
+
+<div class="modal in" id="modal-export-stack" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+
+                <h4><span class="icon icon-keyboard" style="padding-right: 10px;"></span>Import Data to R</h4>
+
+<p>With the <a href="https://github.com/christophsax/dataseries">dataseries</a> R package, you can <strong>directly use the data in R</strong>.</p>
+
+<p>To install from <a href="https://CRAN.R-project.org/package=dataseries">CRAN</a>:</p>
+
+<pre onClick="selectText('oRCodeStack0');" id="oRCodeStack0" class="cp-box"><code>install.packages("dataseries")
+</code></pre>
+
+<p>To get the <strong>collected series</strong> into R:</p>
+
+         <pre onClick="selectText('oRCodeStack');" id="oRCodeStack" class="cp-box shiny-html-output init-hidden"> </pre>
+
+          <!-- <pre id="oRCodeStack" class="shiny-html-output"> </pre> -->
+          </div>
+      </div>
+  </div>
+</div>
+
+
+
+<div id="init-text" class= "init">
+
+<h2 class = "init-title">tidied up</h2>
+
+<h1 class = "init-subtitle">Switzerland's data series in one place</h1>
+</div>
+
+
+
+<!-- slogan in german -->
+<!-- <div class=" text-center" style="opacity: 1;font-weight: normal;position: relative;margin-top: 45px;">
+
+<h1 style="font-weight: normal; font-size: 60px; color: #000">aufgeräumt</h1>
+
+<h3 style="font-weight: normal; font-size: 24px; color: #000;">alle relevanten Datenreihen der Schweiz auf einer Seite</h3>
+</div>
+ -->
+
+
+<div class="container p-t">
+<div class="row">
+
+    <div class="col-md-8">
+        <div id="oSearch" class="shiny-html-output"></div>
+        <div class="panel panel-default m-b-md init-hidden" style="visibility: hidden;">
+            <div class="panel-body">
+
+                <div id="oVar" class="shiny-html-output"></div>
+
+                <div class="btn-group pull-right" role="group" aria-label="Basic example">
+
+                <!--     <button data-hover="tooltip" data-container="body" title="Embed Graph in Website"  data-toggle="modal" data-target="#modal-embed" type="button" class="btn btn btn-default" ><span class="icon icon-code"></span></button>
+
+ -->
+    
+
+           <!--          <button data-hover="tooltip" data-container="body" title="Import Series to R" data-toggle="modal" data-target="#modal-export-graph" type="button" class="btn btn btn-default" ><span class="icon icon-cog"></span></button>
+ -->
+     
+                    <button data-hover="tooltip" data-container="body" title="Add Series to Collection"  id = "iActionAddToList" type="button" class="btn btn btn-default action-button" ><span class="icon icon-attachment"></span></button>
+                </div>
+
+
+                <div id="oMainPlot" style="width: calc(100% + 10px); height:60vmin; margin-left:-15px; margin-top:42px;" class="dygraphs html-widget html-widget-output"></div>
+
+                <div style="height: 17px;">
+
+                <span hidden id = "info-zoom-touch" class = "dygraph-info">pinch to zoom, swipe to navigate, double-tap to restore</span>
+
+                <span hidden id = "info-zoom-click" class = "dygraph-info">click and drag to zoom, double-click to restore</span>
+
+
+                <span class="pull-right" id="oLabel" style="height: 17px;"></span>
+
+                </div>
+              
+            </div>
+
+            <div class="panel-footer">
+    
+                <button id="zoom-lock" type="button" class="btn btn-sm btn-default btn-round pull-right" style="display: none;"><span class="icon icon-notifications-off"></span></button>
+
+                <div>
+                    <select id="iTransform" class="custom-select">
+                      <option value="none">No transformation</option>
+                      <option value="log">Logarithmic scale</option>
+                      <option value="pc">% change</option>
+                      <option value="pcy">% change (y-o-y)</option>
+                      <option value="indA">Index (start = 100)</option>
+                      <option value="indB">Index (end = 100)</option>
+                    </select>
+                    <span id="oSelect" class="shiny-html-output"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        
+      <!--   <div class="alert alert-danger alert-dismissible hidden-xs init-hidden" style="visibility: hidden;" role="alert"> -->
+    
+        <!-- </div> -->
+
+
+        <div id="oSplit" class="shiny-html-output"></div>
+
+
+        <div id="oSource" class="shiny-html-output"></div>
+
+
+        <div id="oInfo" class="shiny-html-output"></div>
+
+    </div>
+
+</div> 
+
+
+
+</div>
+
+    <script src="assets/htmlwidgets/htmlwidgets.js"></script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/dygraph/1.1.1/dygraph-combined.js"></script>
+
+    <script src="assets/dygraph/dygraph-binding.js"></script>
+    <script src="assets/js/toolkit.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready( function() {
+
+            // no init screen if called w parameters
+            var uri = decodeURIComponent(window.location.search.substring(1))
+            if (uri.length > 0) {
+              $('#searchpanel').removeClass('init-search');
+              $('.init-hidden').removeAttr('style');
+              $('.init').hide();
+              $('#mainbody').css('background-color', 'rgb(245, 248, 250)');
+
+              $('#mainbody').css('background-image', 'none');
+
+              // we do the trans options on JS side...
+              if (uri.match(trans)) {
+                  var trans = uri.replace(/^.*trans=/, '');
+                  $("#iTransform option[value=" + trans + "]").prop("selected", "selected")
+              }
+            }
+
+
+            // activate dropdown
+            $('.dropdown-toggle').dropdown();
+
+
+            function isTouchDevice() {
+              return 'ontouchstart' in document.documentElement;
+            }
+
+            $(document).on('shiny:connected', function(event) {
+              if (isTouchDevice()){
+                Shiny.onInputChange('iZoom', "disabled");
+              } else {
+                Shiny.onInputChange('iZoom', "enabled");
+                 // click and drag tooltip
+                $('#oMainPlot').hover(function(){
+                    $("#info-zoom-click").show();
+                }, function() {
+                    $("#info-zoom-click").hide();
+                });
+              }
+            });
+
+            // if (isTouchDevice()){
+            //     $("#zoom-lock").removeAttr('style');
+            //     $("#zoom-lock").on('click', function(event) {
+            //       $(this).toggleClass('active');
+            //       if ($(this).hasClass('active')){
+
+            //         $(this).find('span').addClass('icon-notification');
+            //         $(this).find('span').removeClass('icon-notifications-off');
+            //         $("#info-zoom-touch").show();
+            //         Shiny.onInputChange('iZoom', "enabled");
+            //       } else {
+
+            //         $(this).find('span').addClass('icon-notifications-off');
+            //         $(this).find('span').removeClass('icon-notification');
+            //         $("#info-zoom-touch").hide();
+            //         Shiny.onInputChange('iZoom', "disabled");
+            //       }
+            //     });
+            // } else {
+            //   // click and drag tooltip
+            //   $('#oMainPlot').hover(function(){
+            //       $("#info-zoom-click").show();
+            //   }, function() {
+            //       $("#info-zoom-click").hide();
+            //   });
+
+            // }
+
+           // activate tooltips
+            $(function () {
+              $('[data-hover="tooltip"]').tooltip();
+            });
+
+        });
+
+
+        // google analytics
+
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+          })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-46240882-4', 'auto');
+        ga('send', 'pageview');
+    </script>
+
+
+</body>
+
+</html>
