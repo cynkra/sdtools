@@ -114,6 +114,6 @@ test_swissdata <- function(x) {
 
   # TODO more test on units
 
-  list(data = data, meta = meta)
+  x
 
 }

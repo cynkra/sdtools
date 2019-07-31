@@ -41,9 +41,16 @@ read_swissdata <- function(set_path, test = TRUE) {
 #' @export
 read_swissdata_json <- function(set_path) {
 
+  set_path <- normalizePath(set_path, mustWork = TRUE)
+
   files <- list.files(set_path, full.names = TRUE)
   file.json <- grep("json$", files, value = TRUE)
+  stopifnot(length(file.json) == 1)
   file.csv <- grep("csv$", files, value = TRUE)
+  stopifnot(length(file.csv) == 1)
+
+  set_id <- gsub(".json", "", basename(file.json))
+  stopifnot(identical(set_id, gsub(".csv", "", basename(file.csv))))
 
   meta <- jsonlite::read_json(file.json)
   data <- readr::read_csv(file.csv, col_types = readr::cols(
@@ -52,7 +59,11 @@ read_swissdata_json <- function(set_path) {
     .default = readr::col_character()
   ))
 
-  z <- list(meta = empty_list_to_null(meta), data = data)
+  z <- list(
+    meta = dots_to_underscore(empty_list_to_null(meta)),
+    data = data,
+    set_id = gsub(".", "_", set_id, fixed = TRUE)
+  )
 
   class(z) <- "swissdata"
   z
