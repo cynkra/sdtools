@@ -6,7 +6,3 @@ ensure_path <- function(path) {
   file.remove(list.files(path, full.names = TRUE))
 }
 
-#' @export
-test_swissdata <- function(x) {
-  test_data_meta2(x$data, x$meta)
-}

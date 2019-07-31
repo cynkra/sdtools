@@ -1,14 +1,20 @@
-# copy pasted from swissdata, may be extended here
+# basics from swissdata, extended
 
 #' @export
-test_data_meta2 <- function(data, meta){
+test_swissdata <- function(x) {
+
+  stopifnot("set_id" %in% names(x))
+  if (grepl(".", x$set_id, fixed = TRUE)) stop("set_id must not contain dots (.)")
+
+  data <- x$data
+  meta <- x$meta
 
   stopifnot(inherits(data, "tbl_df"))
   stopifnot(inherits(meta, "list"))
 
   # Has meta the correct entries?
   have.tos <- c("title", "source_name", "source_url", "units", "dim_order", "aggregate", "labels", "updated_utc")
-  nice.to.haves <- c("details", "hierarchy", "sha1", "dataseries", "set_id")
+  nice.to.haves <- c("details", "hierarchy", "sha1", "dataseries")
   if (length(setdiff(have.tos, names(meta))) > 0){
     stop(
       "missing elements in meta: ",

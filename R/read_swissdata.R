@@ -11,6 +11,8 @@ read_swissdata <- function(set_path, test = TRUE) {
   file.csv <- grep("csv$", files, value = TRUE)
   stopifnot(length(file.csv) == 1)
 
+  set_id <- gsub(".yaml", "", basename(file.yaml))
+  stopifnot(identical(set_id, gsub(".csv", "", basename(file.csv))))
 
   meta <- yaml::yaml.load_file(file.yaml)
   data <- suppressMessages(readr::read_csv(file.csv))
@@ -20,11 +22,14 @@ read_swissdata <- function(set_path, test = TRUE) {
     .default = readr::col_character()
   ))
 
+  # use seco style labeling and usage of .
   names(data) <- gsub(".", "_", names(data), fixed = TRUE)
 
-  z <- list(meta = dots_to_underscore(empty_list_to_null(meta)), data = data)
-
-  # use seco labeling
+  z <- list(
+    meta = dots_to_underscore(empty_list_to_null(meta)),
+    data = data,
+    set_id = gsub(".", "_", set_id, fixed = TRUE)
+  )
   names(z$meta) <- gsub("utc_updated", "updated_utc", names(z$meta), fixed = TRUE)
 
   class(z) <- "swissdata"
