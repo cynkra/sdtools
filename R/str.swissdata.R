@@ -12,7 +12,7 @@ str.swissdata <- function(x) {
 
   hierarchy <- c(hierarchy, lapply(x$meta$labels[dims.no.covered], function(x) lapply(x, function(x) list())))
 
-  dim_id_label <- swissdata:::list_to_dim_id_label(meta$label)
+  dim_id_label <- list_to_dim_id_label(meta$label)
   dim_id_label_switched_raw <-
     dim_id_label %>%
     rename(value = !!language) %>%
@@ -59,6 +59,17 @@ translate_hierarchy_with_id <- function (hierarchy, dim_id_label, lang = "en") {
   names(z) <- translate_id_label_with_id(names(z), id_label)
   z
 }
+
+list_to_dim_id_label <- function(labels){
+  labels <- null_to_empty_string(labels)
+  tibble(dim = names(labels), data = labels) %>%
+    rowwise() %>%
+    mutate(id = list(names(data)))  %>%
+    mutate(data = list(lapply(data, as_tibble))) %>%
+    unnest() %>%
+    unnest()
+}
+
 
 # swissdata:::translate_id_label
 translate_id_label_with_id <- function (x, id_label) {

@@ -1,7 +1,9 @@
 # set_path <- "/Users/christoph/git/swissdata/swissdata/wd/ch.fso.besta.mjr"
 # read_swissdata(set_path)
 #' @export
-read_swissdata <- function(set_path, test = TRUE) {
+read_swissdata <- function(..., test = TRUE) {
+
+  set_path <- file.path(...)
 
   set_path <- normalizePath(set_path, mustWork = TRUE)
 
@@ -15,12 +17,15 @@ read_swissdata <- function(set_path, test = TRUE) {
   stopifnot(identical(set_id, gsub(".csv", "", basename(file.csv))))
 
   meta <- yaml::yaml.load_file(file.yaml)
-  data <- suppressMessages(readr::read_csv(file.csv))
-  data <- readr::read_csv(file.csv, col_types = readr::cols(
-    date = readr::col_date(format = ""),
-    value = readr::col_double(),
-    .default = readr::col_character()
-  ))
+  # data <- readr::read_csv(file.csv, col_types = readr::cols(
+  #   date = readr::col_date(format = ""),
+  #   value = readr::col_double(),
+  #   .default = readr::col_character()
+  # ))
+  data <- as_tibble(data.table::fread(file.csv, colClasses=c(date = "Date", value = "numeric")))
+  id_cols <- setdiff(names(data), c("date", "value"))
+  data <-
+    mutate(mutate_at(data, id_cols, as.character), date = as.Date(date))
 
   # use seco style labeling and usage of .
   names(data) <- gsub(".", "_", names(data), fixed = TRUE)
@@ -53,11 +58,16 @@ read_swissdata_json <- function(set_path) {
   stopifnot(identical(set_id, gsub(".csv", "", basename(file.csv))))
 
   meta <- jsonlite::read_json(file.json)
-  data <- readr::read_csv(file.csv, col_types = readr::cols(
-    date = readr::col_date(format = ""),
-    value = readr::col_double(),
-    .default = readr::col_character()
-  ))
+  # data <- readr::read_csv(file.csv, col_types = readr::cols(
+  #   date = readr::col_date(format = ""),
+  #   value = readr::col_double(),
+  #   .default = readr::col_character()
+  # ))
+  data <- as_tibble(data.table::fread(file.csv, colClasses=c(date = "Date", value = "numeric")))
+  id_cols <- setdiff(names(data), c("date", "value"))
+  data <-
+    mutate(mutate_at(data, id_cols, as.character), date = as.Date(date))
+
 
   z <- list(
     meta = dots_to_underscore(empty_list_to_null(meta)),
@@ -82,6 +92,11 @@ empty_list_to_null <- function(x) {
   lapply(x, empty_list_to_null)
 }
 
+null_to_empty_string <- function(x) {
+  if (is.null(x)) return("")
+  if (!is.null(x) & !is.list(x)) return(x)
+  lapply(x, null_to_empty_string)
+}
 
 
 

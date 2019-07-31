@@ -4,11 +4,61 @@ library(dstools)  # dataseries_run()
 
 
 
+path <- normalizePath(swissdata::path_wd())
+
+
+
+
+x <- read_swissdata(path, "ch.adecco.sjmi")
+x$meta$dataseries <- yaml::yaml.load('
+map:
+  split: idx_type
+selected: sch
+category: Labor Market
+')
+
+dataseries_run(x)
+
+
+
+
+# all experiments --------------------------------------------------------------
+
+all <- list.files(path, full.names = TRUE)
+
+sapply(all, read_swissdata)
+
+x <- read_swissdata(path, "ch.adecco.sjmi")
+x$meta$dataseries <- yaml::yaml.load('
+map:
+  split: idx_type
+selected: sch
+category: Labor Market
+')
+
+dataseries_run(x)
+
+
+
+
+# ch_adecco_sjmi ---------------------------------------------------------------
+
+x <- read_swissdata(path, "ch.adecco.sjmi")
+x$meta$dataseries <- yaml::yaml.load('
+map:
+  split: idx_type
+selected: sch
+category: Labor Market
+')
+
+dataseries_run(x)
+
+
 
 # ch_comb_jobs -----------------------------------------------------------------
 
-x0 <- read_swissdata("/Users/christoph/git/swissdata/wd/ch.fso.besta.sex")
-y0 <- read_swissdata("/Users/christoph/git/swissdata/wd/ch.fso.besta")
+x0 <- read_swissdata(path, "ch.fso.besta.sex")
+y0 <- read_swissdata(path, "ch.fso.besta")
 
 x <- relabel(x0,
   "employment_rate" = "occupancy",
