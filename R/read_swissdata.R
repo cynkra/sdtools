@@ -17,6 +17,26 @@ read_swissdata <- function(..., test = TRUE) {
   stopifnot(identical(set_id, gsub(".csv", "", basename(file.csv))))
 
   meta <- yaml::yaml.load_file(file.yaml)
+
+  # SNB Series have NA details, but should have no 'details' entry
+  if (!is.null(meta$details) && is.null(meta$details[[1]])) {
+    meta$details <- NULL
+  }
+  if (!is.null(meta$details) && length(meta$details[[1]]) == 0) {
+    meta$details <- NULL
+  }
+
+  if (!is.null(meta$units) && is.null(meta$units[[1]])) {
+    meta$units <- list(all = list(en = " "))
+  }
+  if (!is.null(meta$units) && length(meta$units[[1]]) == 0) {
+    meta$units <- list(all = list(en = " "))
+  }
+  if (is.null(meta$units)) {
+    meta$units <- list(all = list(en = " "))
+  }
+
+
   # data <- readr::read_csv(file.csv, col_types = readr::cols(
   #   date = readr::col_date(format = ""),
   #   value = readr::col_double(),
@@ -40,6 +60,7 @@ read_swissdata <- function(..., test = TRUE) {
   class(z) <- "swissdata"
 
   if (test) ans <- test_swissdata(z)
+  message("successfully read: ", set_id)
   z
 }
 
@@ -80,9 +101,11 @@ read_swissdata_json <- function(set_path) {
 }
 
 #' @export
-write_swissdata <- function(x, path) {
-  ensure_path(path)
-  swissdata::write_data_meta(z$data, z$meta, set_id = basename(path), .path_out = path)
+write_swissdata <- function(x, path_out) {
+  path_out_set <- file.path(path_out, x$set_id)
+  ensure_path(path_out_set)
+  test_swissdata(x)
+  swissdata::write_data_meta(x$data, x$meta, set_id = x$set_id, .path_out = path_out_set)
 }
 
 

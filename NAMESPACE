@@ -3,6 +3,7 @@
 S3method(str,swissdata)
 export(dim_add)
 export(ensure_path)
+export(list_to_dim_id_label)
 export(marry)
 export(read_swissdata)
 export(read_swissdata_json)

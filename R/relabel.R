@@ -18,7 +18,7 @@ relabel <- function(x, ...) {
   names(x$meta$labels) <- relabel_vector(names(x$meta$labels), dfrom, dto)
   names(x$meta$hierarchy) <- relabel_vector(names(x$meta$hierarchy), dfrom, dto)
   names(x$meta$units) <- relabel_vector(names(x$meta$units), dfrom, dto)
-  x$meta$dim.order <- relabel_vector(x$meta$dim.order, dfrom, dto)
+  x$meta$dim_order <- relabel_vector(x$meta$dim_order, dfrom, dto)
   colnames(x$data) <- relabel_vector(colnames(x$data), dfrom, dto)
 
   # renaming labels

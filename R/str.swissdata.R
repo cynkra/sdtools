@@ -60,6 +60,7 @@ translate_hierarchy_with_id <- function (hierarchy, dim_id_label, lang = "en") {
   z
 }
 
+#' @export
 list_to_dim_id_label <- function(labels){
   labels <- null_to_empty_string(labels)
   tibble(dim = names(labels), data = labels) %>%
