@@ -1,11 +1,16 @@
 # set_path <- "/Users/christoph/git/swissdata/swissdata/wd/ch.fso.besta.mjr"
 # read_swissdata(set_path)
 #' @export
-read_swissdata <- function(set_path) {
+read_swissdata <- function(set_path, test = TRUE) {
+
+  set_path <- normalizePath(set_path, mustWork = TRUE)
 
   files <- list.files(set_path, full.names = TRUE)
   file.yaml <- grep("yaml$", files, value = TRUE)
+  stopifnot(length(file.yaml) == 1)
   file.csv <- grep("csv$", files, value = TRUE)
+  stopifnot(length(file.csv) == 1)
+
 
   meta <- yaml::yaml.load_file(file.yaml)
   data <- suppressMessages(readr::read_csv(file.csv))
@@ -15,6 +20,8 @@ read_swissdata <- function(set_path) {
     .default = readr::col_character()
   ))
 
+  names(data) <- gsub(".", "_", names(data), fixed = TRUE)
+
   z <- list(meta = dots_to_underscore(empty_list_to_null(meta)), data = data)
 
   # use seco labeling
@@ -22,10 +29,11 @@ read_swissdata <- function(set_path) {
 
   class(z) <- "swissdata"
 
-  ans <- test_swissdata(z)
+  if (test) ans <- test_swissdata(z)
   z
 }
 
+#' @export
 read_swissdata_json <- function(set_path) {
 
   files <- list.files(set_path, full.names = TRUE)

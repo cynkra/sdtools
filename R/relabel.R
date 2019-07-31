@@ -14,7 +14,6 @@ relabel <- function(x, ...) {
   # renaming dims
   dfrom <- dims.from[is.na(labels.to)]
   dto <- dims.to[is.na(labels.to)]
-
   names(x$meta$labels$dimnames) <- relabel_vector(names(x$meta$labels$dimnames), dfrom, dto)
   names(x$meta$labels) <- relabel_vector(names(x$meta$labels), dfrom, dto)
   names(x$meta$hierarchy) <- relabel_vector(names(x$meta$hierarchy), dfrom, dto)
@@ -27,7 +26,6 @@ relabel <- function(x, ...) {
   lfrom <- labels.from[!is.na(labels.to)]
   lto <- labels.to[!is.na(labels.to)]
 
-  # browser()
   for (dim in unique(ldim)) {
     names(x$meta$labels[[dim]]) <-
       relabel_vector(names(x$meta$labels[[dim]]), lfrom[ldim == dim], lto[ldim == dim])

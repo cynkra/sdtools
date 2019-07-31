@@ -33,7 +33,6 @@ merge_list2 <- function(x, y) {
   new.from.y <- y[!(names(y) %in% nn)]
   z <- x
   z[names(new.from.y)] <- new.from.y
-  # browser()
   z[nn] <- Map(merge_list2, x = x[nn], y = y[nn])
   z
 }
