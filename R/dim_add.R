@@ -7,3 +7,20 @@ dim_add <- function(x, dim = "geo", level = "0", label = level) {
   x$meta$labels$dimnames <- c(x$meta$labels$dimnames, setNames(list(list(en = dim)), dim))
   x
 }
+
+#' @export
+dim_drop <- function(x, dim = "trans", level = "ind") {
+  stopifnot(level %in% x$data[[dim]])
+
+  x$data <-
+    x$data %>%
+    filter(!! sym(dim) == level) %>%
+    select(- !! sym(dim))
+
+  x$meta$dim_order <- setdiff(x$meta$dim_order, dim)
+  x$meta$labels[dim] <- NULL
+  x$meta$hierarchy[dim] <- NULL
+  x$meta$units[dim] <- NULL
+  x$meta$labels$dimnames[dim]<- NULL
+  x
+}

@@ -37,7 +37,16 @@ test_swissdata <- function(x) {
   # Are the dimensions in data and meta identical?
   dims <- colnames(data)[1:(ncol(data)-2)]
   dims.meta <- setdiff(names(meta$labels), "dimnames")
-  stopifnot(identical(sort(dims), sort(dims.meta)))
+  if (!(identical(sort(dims), sort(dims.meta)))) {
+    stop(
+      "dimensions in data (",
+      paste(sort(dims), collapse = ", "),
+      ") differ from those in meta$labels (",
+      paste(sort(dims.meta), collapse = ", "),
+      ")",
+      call. = FALSE
+    )
+  }
 
 
   for (dim.i in dims){
@@ -51,7 +60,7 @@ test_swissdata <- function(x) {
     if (length(setdiff(unique(data[[dim.i]]), names(meta$labels[[dim.i]]))) > 0){
       stop(
         "data meta mismatch - values in dim '", dim.i, "' differ: \n\ndata: ",
-        paste(unique(data[[dim.i]]), collapse = ", "), "\n\nmeta: ",
+        paste(unique(data[[dim.i]]), collapse = ", "), "\n\nmeta$labels: ",
         paste(names(meta$labels[[dim.i]]), collapse = ", "),
         call. = FALSE
       )
