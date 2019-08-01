@@ -20,7 +20,11 @@ dim_drop <- function(x, dim = "trans", level = "ind") {
   x$meta$dim_order <- setdiff(x$meta$dim_order, dim)
   x$meta$labels[dim] <- NULL
   x$meta$hierarchy[dim] <- NULL
-  x$meta$units[dim] <- NULL
+
+  if (dim %in% names(x$meta$units)) {
+    x$meta$units$all <- x$meta$units[[dim]][[level]]
+    x$meta$units[dim] <- NULL
+  }
   x$meta$labels$dimnames[dim]<- NULL
   x
 }
