@@ -30,6 +30,17 @@ test_swissdata <- function(x) {
     )
   }
 
+
+  # Does data have NAs?
+  stopifnot(!any(is.na(data$date)))
+  stopifnot(!any(is.na(data$value)))
+
+  # are the dates start of period?
+  days <- unique(as.POSIXlt(data$date)$mday)
+  if (length(days) < 6 && !(1 %in% days)) {
+    stop("dates need to be first of period")
+  }
+
   # Has data the correct final columns
   stopifnot(colnames(data)[ncol(data)] == "value")
   stopifnot(colnames(data)[ncol(data)-1] == "date")
