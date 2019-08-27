@@ -12,6 +12,7 @@ License: What license it uses
 Encoding: UTF-8
 LazyData: true
 Imports:
-    readr
+    readr,
+    dplyr
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.1

@@ -1,6 +1,7 @@
 # set_path <- "/Users/christoph/git/swissdata/swissdata/wd/ch.fso.besta.mjr"
 # read_swissdata(set_path)
 #' @export
+#' @import dplyr
 read_swissdata <- function(..., test = TRUE) {
 
   set_path <- file.path(...)
