@@ -1,21 +1,22 @@
-#' Add New Dimension
+#' Add or Drop Dimensions
 #'
-#' Adds an additional dimension to the provided Swissdata object.
+#' `dim_add` adds an additional dimension to a Swissdata object, `dim_drop`
+#' removes a dimension.
 #'
 #' Given an existing Swissdata object and additional parameters of
 #' dimension name, dimension level, and dimension label this function
-#' incorporates the newly specified dimension by altering the \code{x$data},
-#' \code{x$meta$hierarchy}, \code{x$meta$labels}, and \code{x$meta$dim_order}
-#' fields.
+#' incorporates the newly specified dimension by altering the `x$data`,
+#' `x$meta$hierarchy`, `x$meta$labels`, and \code{x$meta$dim_order`
+#' fields. When removing the dimesnion from `x$data` only the rows
+#' corresponding to provided level argument are retained
 #'
 #' @param x swissdata object
-#' @param dim name of dimension to be added (default = "geo")
-#' @param level level id used for the newly added dimension (default = "0")
-#' @param label English label for the newly added dimension (default = \code{level})
+#' @param dim name of dimension to be added or removed
+#' @param level single level ID to be used in the new dimension (`dim_add`), or
+#'   single level ID for which the data is filtered (`dim_drop`).
+#' @param label English label for the newly added dimension
 #'
 #' @return a modified swissdata object that includes newly added dimension
-#'
-#' @seealso \code{dim_drop}
 #'
 #' @author Christoph Sax
 #' @export
@@ -32,25 +33,7 @@ dim_add <- function(x, dim = "geo", level = "0", label = level) {
 }
 
 
-#' Drop Existing Dimension
-#'
-#' Drops an existing dimension from the provided Swissdata object.
-#'
-#' Given an existing Swissdata object and a dimension name, this function
-#' removes this dimension from the data by modifying the \code{x$data},
-#' \code{x$meta$hierarchy}, \code{x$meta$labels}, and \code{x$meta$dim_order}
-#' fields. When removing the dimesnion from \code{x$data} only the rows
-#' corresponding to provided level argument are retained
-#'
-#' @param x swissdata object
-#' @param dim name of dimension to be removed (default = "trans")
-#' @param level level id from the dropped dimension that will be retained (default = "ind")
-#'
-#' @return a modified swissdata object with the specified dimension removed.
-#'
-#' @seealso \code{dim_add}
-#'
-#' @author Christoph Sax
+#' @name dim_add
 #' @export
 dim_drop <- function(x, dim = "trans", level = "ind") {
   stopifnot(level %in% x$data[[dim]])

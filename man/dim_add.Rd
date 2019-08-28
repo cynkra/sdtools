@@ -2,34 +2,29 @@
 % Please edit documentation in R/dim_add.R
 \name{dim_add}
 \alias{dim_add}
-\title{Add New Dimension}
+\alias{dim_drop}
+\title{Add or Drop Dimensions}
 \usage{
 dim_add(x, dim = "geo", level = "0", label = level)
+
+dim_drop(x, dim = "trans", level = "ind")
 }
 \arguments{
 \item{x}{swissdata object}
 
-\item{dim}{name of dimension to be added (default = "geo")}
+\item{dim}{name of dimension to be added or removed}
 
-\item{level}{level id used for the newly added dimension (default = "0")}
+\item{level}{single level ID to be used in the new dimension (\code{dim_add}), or
+single level ID for which the data is filtered (\code{dim_drop}).}
 
-\item{label}{English label for the newly added dimension (default = \code{level})}
+\item{label}{English label for the newly added dimension}
 }
 \value{
 a modified swissdata object that includes newly added dimension
 }
 \description{
-Adds an additional dimension to the provided Swissdata object.
-}
-\details{
-Given an existing Swissdata object and additional parameters of
-dimension name, dimension level, and dimension label this function
-incorporates the newly specified dimension by altering the \code{x$data},
-\code{x$meta$hierarchy}, \code{x$meta$labels}, and \code{x$meta$dim_order}
-fields.
-}
-\seealso{
-\code{dim_drop}
+\code{dim_add} adds an additional dimension to a Swissdata object, \code{dim_drop}
+removes a dimension.
 }
 \author{
 Christoph Sax
