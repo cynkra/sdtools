@@ -20,7 +20,7 @@ single level ID for which the data is filtered (\code{dim_drop}).}
 \item{label}{English label for the newly added dimension}
 }
 \value{
-a modified swissdata object that includes newly added dimension
+a modified swissdata object
 }
 \description{
 \code{dim_add} adds an additional dimension to a Swissdata object, \code{dim_drop}
