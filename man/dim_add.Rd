@@ -26,6 +26,23 @@ a modified swissdata object
 \code{dim_add} adds an additional dimension to a Swissdata object, \code{dim_drop}
 removes a dimension.
 }
+\examples{
+  # add new dimension "new_dim"
+  z <- adecco
+  z <- dim_add(z, dim = "new_dim", level = "nd", label = "newly added dim")
+  z$data
+  z$meta$dim_order
+  z$meta$labels$new_dim
+  z$meta$hierarchy$new_dim
+
+  # drop existing dimension idx_type (collapse to level "sch")
+  z <- dim_drop(z, dim = "idx_type", level = "sch")
+  z$data
+  z$meta$dim_order
+  z$meta$labels$idx_type
+  z$meta$hierarchy$idx_type
+
+}
 \author{
 Christoph Sax
 }

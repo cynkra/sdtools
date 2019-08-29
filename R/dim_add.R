@@ -18,7 +18,7 @@
 #'
 #' @return a modified swissdata object
 #'
-#' @example
+#' @examples
 #'   # add new dimension "new_dim"
 #'   z <- adecco
 #'   z <- dim_add(z, dim = "new_dim", level = "nd", label = "newly added dim")
