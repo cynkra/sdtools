@@ -9,7 +9,7 @@
 #'
 #' @keywords datasets
 #'
-#' @source \href{University of Zürich}{University of Zürich}
+#' @source [University of Zürich](http://www.stellenmarktmonitor.uzh.ch/en/indices/asjmi.html)
 #'
 #' @examples
 #' data(adecco)

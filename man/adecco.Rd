@@ -6,7 +6,7 @@
 \title{Adecco Swiss Job Market Index Data}
 \format{An object of class \code{swissdata} of length 3.}
 \source{
-\href{University of Zürich}{University of Zürich}
+\href{http://www.stellenmarktmonitor.uzh.ch/en/indices/asjmi.html}{University of Zürich}
 }
 \usage{
 data(adecco)
