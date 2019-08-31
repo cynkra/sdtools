@@ -24,7 +24,6 @@ marry <- function(x, y) {
 # merge_list2(x, y)
 merge_list2 <- function(x, y) {
   if (!is.list(x)) {
-    stopifnot(!(is.list(y) && length(y > 0)))
     return(y)
   }
   # if list

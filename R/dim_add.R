@@ -19,20 +19,20 @@
 #' @return a modified swissdata object
 #'
 #' @examples
-#'   # add new dimension "new_dim"
-#'   z <- adecco
-#'   z <- dim_add(z, dim = "new_dim", level = "nd", label = "newly added dim")
-#'   z$data
-#'   z$meta$dim_order
-#'   z$meta$labels$new_dim
-#'   z$meta$hierarchy$new_dim
+#' # add new dimension "new_dim"
+#' z <- adecco
+#' z <- dim_add(z, dim = "new_dim", level = "nd", label = "newly added dim")
+#' z$data
+#' z$meta$dim_order
+#' z$meta$labels$new_dim
+#' z$meta$hierarchy$new_dim
 #'
-#'   # drop existing dimension idx_type (collapse to level "sch")
-#'   z <- dim_drop(z, dim = "idx_type", level = "sch")
-#'   z$data
-#'   z$meta$dim_order
-#'   z$meta$labels$idx_type
-#'   z$meta$hierarchy$idx_type
+#' # drop existing dimension idx_type (collapse to level "sch")
+#' z <- dim_drop(z, dim = "idx_type", level = "sch")
+#' z$data
+#' z$meta$dim_order
+#' z$meta$labels$idx_type
+#' z$meta$hierarchy$idx_type
 #'
 #' @author Christoph Sax
 #' @export
@@ -42,7 +42,7 @@ dim_add <- function(x, dim = "geo", level = "0", label = level) {
   x$data[[dim]] <- level
   x$meta$dim_order <- c(x$meta$dim_order, dim)
   x$data <- select(x$data, !! x$meta$dim_order, everything())
-  x$meta$hierarchy[[dim]] <- level
+  x$meta$hierarchy[[dim]] <- setNames(list(NULL), level)
   x$meta$labels[[dim]] <- setNames(list(list(en = label)), level)
   x$meta$labels$dimnames <- c(x$meta$labels$dimnames, setNames(list(list(en = dim)), dim))
   x
