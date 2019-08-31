@@ -1,3 +1,4 @@
+#' Download and Read swissdata set
 #' @export
 #' @examples
 #' # works without autentication!
