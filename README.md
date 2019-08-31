@@ -19,5 +19,9 @@ Basically, it allows you to read datasets (data and meta), to manipulate and mer
 sdtools contains downloaders that read data from the regular runs. This data is read from an open S3 bucket, and no authentification is required. To start, simply do:
 
 ```r
-read_swissdata_s3("ch_comb_vacancies")
+sdtools::read_swissdata_s3("ch_comb_vacancies")
 ```
+
+swissdata is run twice on a server and the results are stored on a S3 bucket. A status report gives an overview on the scraping success and is available at:
+
+https://sos-ch-dk-2.exo.io/swissdata/status.html
