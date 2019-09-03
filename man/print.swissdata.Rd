@@ -8,12 +8,23 @@
 }
 \arguments{
 \item{x}{swissdata object}
+
+\item{language}{language to be used for printing the labels}
 }
 \value{
 invisibly returns the swissdata object
 }
 \description{
 Function for printing swissdata objects
+}
+\examples{
+z <- adecco
+print(z)
+print(z, languge = "de")
+
+}
+\seealso{
+\code{str.swissdata}
 }
 \author{
 Christoph Sax
