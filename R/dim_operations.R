@@ -10,8 +10,7 @@
 #' `x$meta$labels`, `x$meta$units`, and `x$meta$dim_order` fields.
 #'
 #' When removing the dimesnion using `dim_drop` only the rows corresponding to
-#' provided level argument are retained in `x$data`. `dim_rename` changes the
-#' given dimension name
+#' provided level argument are retained in `x$data`.
 #'
 #' @param x swissdata object
 #' @param dim dimension name
@@ -92,6 +91,7 @@ dim_rename <- function(x, dim, name) {
   names(x$data) <- replace(names(x$data), names(x$data)==dim, name)
   names(x$meta$hierarchy) <- replace(names(x$meta$hierarchy), names(x$meta$hierarchy)==dim, name)
   names(x$meta$labels) <- replace(names(x$meta$labels), names(x$meta$labels)==dim, name)
+  names(x$meta$labels$dimnames) <- replace(names(x$meta$labels$dimnames), names(x$meta$labels$dimnames)==dim, name)
   names(x$meta$units) <- replace(names(x$meta$units), names(x$meta$units)==dim, name)
 
   x
