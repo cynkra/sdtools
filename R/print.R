@@ -54,12 +54,12 @@ str.swissdata <- function(x, language = 'en') {
 
   label.hierarchy <- hierarchy
   for(dm in setdiff(names(labels), "dimnames")) {
-    pos <- rfind(label.hierarchy, dm)
+    pos <- find_list_by_name(label.hierarchy, dm)
     lab <- paste(dm, "-", labels$dimnames[[dm]][[language]])
     label.hierarchy[[pos]] <- list(lab, label.hierarchy[[pos]])
     for(lv in names(labels[[dm]])) {
-      pos <- rfind(label.hierarchy, lv)
-      pad <- (length(rfind(hierarchy, lv)) - 1) * 2
+      pos <- find_list_by_name(label.hierarchy, lv)
+      pad <- (length(find_list_by_name(hierarchy, lv)) - 1) * 2
       lab <- paste(lv, "-", labels[[dm]][[lv]][[language]])
       lab <- paste0(strrep(" ", pad), lab)
       label.hierarchy[[pos]] <- list(lab, label.hierarchy[[pos]])

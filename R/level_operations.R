@@ -44,7 +44,7 @@ level_drop <- function(x, dim, level) {
     x$data %>%
     filter(!! sym(dim) != level)
 
-  hpos <- rfind(x$meta$hierarchy[[dim]], level)
+  hpos <- find_list_by_name(x$meta$hierarchy[[dim]], level)
   x$meta$hierarchy[[dim]][[hpos]] <- NULL
   x$meta$labels[[dim]][level] <- NULL
 
@@ -60,7 +60,7 @@ level_rename <- function(x, dim, level, name) {
 
   x$data[[dim]] <- replace(x$data[[dim]], x$data[[dim]]==level, name)
 
-  hpos <- rfind(x$meta$hierarchy[[dim]], level)
+  hpos <- find_list_by_name(x$meta$hierarchy[[dim]], level)
   if(length(hpos) == 1) {
     hpos <- TRUE
   } else {

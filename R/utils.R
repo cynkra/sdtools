@@ -8,9 +8,9 @@ ensure_path <- function(path) {
 
 # Recursive Find in a List
 # x <- list(d = list(c = list(a = "aa", b = "bb")), e = list(f = NA))
-# rfind(x, "a")
-# rfind(x, "f")
-rfind <- function(x, name, pos=c()) {
+# find_list_by_name(x, "a")
+# find_list_by_name(x, "f")
+find_list_by_name <- function(x, name, pos=c()) {
   ind <- match(name, names(x))
   if (!is.na(ind)) return(c(pos, ind))
   for (i in seq_along(x)) {
