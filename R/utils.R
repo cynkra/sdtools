@@ -62,7 +62,7 @@ null_to_empty_string <- function(x) {
 # dots_to_underscore(x)
 dots_to_underscore <- function(x) {
   if (!is.list(x)) return(x)
-  x <- setNames(x, gsub(".", "_", names(x), fixed = TRUE))
+  x <- stats::setNames(x, gsub(".", "_", names(x), fixed = TRUE))
   lapply(x, dots_to_underscore)
 }
 

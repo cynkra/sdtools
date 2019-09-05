@@ -14,7 +14,10 @@ LazyData: true
 URL: https://github.com/christophsax/sdtools
 BugReports: https://github.com/christophsax/sdtools/issues
 Imports:
-    readr,
+    data.table,
     dplyr
+    httr,
+    readr,
+    yaml
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.1

@@ -52,9 +52,9 @@ dim_add <- function(x, dim = "geo", level = "0", label = level) {
   x$data[[dim]] <- level
   x$meta$dim_order <- c(x$meta$dim_order, dim)
   x$data <- select(x$data, !! x$meta$dim_order, everything())
-  x$meta$hierarchy[[dim]] <- setNames(list(NULL), level)
-  x$meta$labels[[dim]] <- setNames(list(list(en = label)), level)
-  x$meta$labels$dimnames <- c(x$meta$labels$dimnames, setNames(list(list(en = dim)), dim))
+  x$meta$hierarchy[[dim]] <- stats::setNames(list(NULL), level)
+  x$meta$labels[[dim]] <- stats::setNames(list(list(en = label)), level)
+  x$meta$labels$dimnames <- c(x$meta$labels$dimnames, stats::setNames(list(list(en = dim)), dim))
   x
 }
 
