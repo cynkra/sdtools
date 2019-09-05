@@ -1,16 +1,18 @@
 Package: sdtools
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
-Authors@R:
-    person(given = "First",
-           family = "Last",
-           role = c("aut", "cre"),
-           email = "first.last@example.com",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: What license it uses
+Title: Tools for Manipulating Swissdata Objects
+Version: 0.1.0
+Authors@R: person("Christoph", "Sax", email = "christoph@cynkra.com", role = c("aut", "cre"))
+Description: Provides additional tools for convenient manipulation of swissdata objects from the swissdata R package.
+  The functionality includes the following types operations:
+  1) printing objects and inspecting their validity,
+  2) manipulating dimensions and dimension levels,
+  3) combining two objects into one,
+  4) reading and writing.
+License: GPL-2
 Encoding: UTF-8
 LazyData: true
+URL: https://github.com/christophsax/sdtools
+BugReports: https://github.com/christophsax/sdtools/issues
 Imports:
     readr,
     dplyr

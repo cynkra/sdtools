@@ -1,3 +1,25 @@
+#' Marry Two Swissdata Objects
+#'
+#' Combine the dimension levels from two swissdata objects.
+#'
+#' The function adds dimension levels that are present only in `y` to `x`.
+#' As a result in the case where the same dimensions or levels are present
+#' in both of the objects - the one from `x` is selected.
+#'
+#' `test_swissdata()` function is executed before returning the output
+#' in order to make sure the combination of the two objects was successful.
+#'
+#' @param x original swissdata object
+#' @param y additional swissdata object
+#'
+#' @return a combined swissdata object
+#'
+#' @examples
+#' z  <- adecco
+#' z2 <- level_rename(z, "idx_type", "ins", "new")
+#' marry(z, z2)
+#'
+#' @author Christoph Sax
 #' @export
 marry <- function(x, y) {
   newdata <-
@@ -8,31 +30,10 @@ marry <- function(x, y) {
 
   z <- x
 
+  z$data <- newdata
   z$meta$hierarchy <- merge_list2(y$meta$hierarchy, x$meta$hierarchy)
   z$meta$labels <- merge_list2(y$meta$labels, x$meta$labels)
-  z$data <- newdata
-  ans <- test_swissdata(z)
-  z
-}
-
-
-
-# recursively merge list
-
-# x <- list(d = list(c = list(a = "aa", b = "bb")))
-# y <- list(d = list(c = list(a = "AA", c = "CC")))  # dominant
-# merge_list2(x, y)
-merge_list2 <- function(x, y) {
-  if (!is.list(x)) {
-    return(y)
-  }
-  # if list
-  nn <- intersect(names(y), names(x))
-
-  new.from.y <- y[!(names(y) %in% nn)]
-  z <- x
-  z[names(new.from.y)] <- new.from.y
-  z[nn] <- Map(merge_list2, x = x[nn], y = y[nn])
+  test_swissdata(z)
   z
 }
 
