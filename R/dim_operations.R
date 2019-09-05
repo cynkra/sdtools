@@ -44,6 +44,7 @@
 #' z$meta$hierarchy$idx_type
 #'
 #' @author Christoph Sax
+#' @author Karolis Koncevičius
 #' @name dim_operations
 #' @export
 dim_add <- function(x, dim = "geo", level = "0", label = level) {

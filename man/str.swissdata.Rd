@@ -24,5 +24,5 @@ str(z, languge = "de")
 
 }
 \author{
-Christoph Sax
+Karolis Koncevičius
 }

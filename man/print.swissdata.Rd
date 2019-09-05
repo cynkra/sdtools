@@ -27,5 +27,5 @@ print(z, languge = "de")
 \code{str.swissdata}
 }
 \author{
-Christoph Sax
+Karolis Koncevičius
 }

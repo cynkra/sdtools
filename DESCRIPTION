@@ -1,7 +1,10 @@
 Package: sdtools
 Title: Tools for Manipulating Swissdata Objects
 Version: 0.1.0
-Authors@R: person("Christoph", "Sax", email = "christoph@cynkra.com", role = c("aut", "cre"))
+Authors@R: c(
+  person("Christoph", "Sax", email = "christoph@cynkra.com", role = c("aut", "cre")),
+  person("Karolis", "Koncevi\u00e7ius", email = "karolis.koncevicius@gmail.com", role = "aut")
+  )
 Description: Provides tools for manipulation of swissdata objects
   The functionality includes the following types operations:
   1) printing objects and inspecting their validity,
