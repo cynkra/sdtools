@@ -2,7 +2,7 @@ Package: sdtools
 Title: Tools for Manipulating Swissdata Objects
 Version: 0.1.0
 Authors@R: person("Christoph", "Sax", email = "christoph@cynkra.com", role = c("aut", "cre"))
-Description: Provides additional tools for convenient manipulation of swissdata objects from the swissdata R package.
+Description: Provides tools for manipulation of swissdata objects
   The functionality includes the following types operations:
   1) printing objects and inspecting their validity,
   2) manipulating dimensions and dimension levels,
