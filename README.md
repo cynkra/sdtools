@@ -6,7 +6,7 @@ The `sdtools` R package provides functions that work with and modify [swissdata]
 
 List of available function.
 
-### Reading and Writing ###
+#### Reading and Writing ####
 
 ```r
 read_swissdata_yaml()  # reads swissdata object stored in the form of yaml files
@@ -16,30 +16,30 @@ read_swissdata_s3()    # reads swissdata object from Amazon S3 bucket.
 write_swissdata()      # saves swissdata object in the form of yaml files
 ```
 
-### Printing and Validating ###
+#### Printing and Validating ####
 
 ```r
-str()             # prints the sturcture of the swissdata hierarchy
-print()           # prints top 5 rows of the data and the structure of hierarchy
+str()                  # prints the sturcture of the swissdata hierarchy
+print()                # prints top 5 rows of the data and the structure of hierarchy
 
-test_swissdata()  # tests the validity of swissdata object
+test_swissdata()       # tests the validity of swissdata object
 ```
 
-### Manipulating Dimensions and Levels ###
+#### Manipulating Dimensions and Levels ####
 
 ```r
-dim_add()        # adds a new dimension to the data
-dim_drop()       # removes the dimension from the data
-dim_rename()     # renames the dimension
+dim_add()              # adds a new dimension to the data
+dim_drop()             # removes the dimension from the data
+dim_rename()           # renames the dimension
 
-level_drop()     # removes a level from the specified dimension
-level_rename()   # renames a level in the specified dimension
+level_drop()           # removes a level from the specified dimension
+level_rename()         # renames a level in the specified dimension
 ```
 
-### Combining ###
+#### Combining ####
 
 ```r
-marry()   # combines two swissdata objects into one
+marry()                # combines two swissdata objects into one
 ```
 
 ## Installation ##
