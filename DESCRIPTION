@@ -3,7 +3,7 @@ Title: Tools for Manipulating Swissdata Objects
 Version: 0.1.0
 Authors@R: c(
   person("Christoph", "Sax", email = "christoph@cynkra.com", role = c("aut", "cre")),
-  person("Karolis", "Koncevi\u00e7ius", email = "karolis.koncevicius@gmail.com", role = "aut")
+  person("Karolis", "Koncevi\u00e7ius", email = "karolis.koncevicius@gmail.com", role = "ctb")
   )
 Description: Provides tools for manipulation of swissdata objects
   The functionality includes the following types of operations:
