@@ -24,8 +24,8 @@ find_list_by_name <- function(x, name, pos=c()) {
 # Recursively Merge two Lists
 # x <- list(d = list(c = list(a = "aa", b = "bb")))
 # y <- list(d = list(c = list(a = "AA", c = "CC")))  # dominant
-# merge_list2(x, y)
-merge_list2 <- function(x, y) {
+# merge_two_lists(x, y)
+merge_two_lists <- function(x, y) {
   if (!is.list(x)) {
     return(y)
   }
@@ -35,7 +35,7 @@ merge_list2 <- function(x, y) {
   new.from.y <- y[!(names(y) %in% nn)]
   z <- x
   z[names(new.from.y)] <- new.from.y
-  z[nn] <- Map(merge_list2, x = x[nn], y = y[nn])
+  z[nn] <- Map(merge_two_lists, x = x[nn], y = y[nn])
   z
 }
 
