@@ -38,4 +38,3 @@ merge_list2 <- function(x, y) {
   z[nn] <- Map(merge_list2, x = x[nn], y = y[nn])
   z
 }
-
