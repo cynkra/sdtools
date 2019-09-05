@@ -26,9 +26,12 @@ in both of the objects - the one from \code{x} is selected.
 in order to make sure the combination of the two objects was successful.
 }
 \examples{
-z  <- adecco
-z2 <- level_rename(z, "idx_type", "ins", "new")
-marry(z, z2)
+z1 <- adecco
+str(z1)
+z2 <- level_rename(z1, "idx_type", "ins", "new")
+str(z2)
+z <- marry(z1, z2)
+str(z)
 
 }
 \author{

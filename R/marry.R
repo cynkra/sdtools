@@ -15,9 +15,12 @@
 #' @return a combined swissdata object
 #'
 #' @examples
-#' z  <- adecco
-#' z2 <- level_rename(z, "idx_type", "ins", "new")
-#' marry(z, z2)
+#' z1 <- adecco
+#' str(z1)
+#' z2 <- level_rename(z1, "idx_type", "ins", "new")
+#' str(z2)
+#' z <- marry(z1, z2)
+#' str(z)
 #'
 #' @importFrom dplyr anti_join bind_rows
 #' @importFrom magrittr %>%

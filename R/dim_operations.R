@@ -23,25 +23,17 @@
 #' @examples
 #' # add new dimension "new_dim"
 #' z <- adecco
+#' str(z)
 #' z <- dim_add(z, dim = "new_dim", level = "nd", label = "newly added dim")
-#' z$data
-#' z$meta$dim_order
-#' z$meta$labels$new_dim
-#' z$meta$hierarchy$new_dim
+#' str(z)
 #'
 #' # rename the newly added dimension to "dim2"
 #' z <- dim_rename(z, dim = "new_dim", name = "dim2")
-#' z$data
-#' z$meta$dim_order
-#' z$meta$labels$dim2
-#' z$meta$hierarchy$dim2
+#' str(z)
 #'
 #' # drop existing dimension idx_type (collapse to level "sch")
 #' z <- dim_drop(z, dim = "idx_type", level = "sch")
-#' z$data
-#' z$meta$dim_order
-#' z$meta$labels$idx_type
-#' z$meta$hierarchy$idx_type
+#' str(z)
 #'
 #' @importFrom dplyr select filter everything sym
 #' @importFrom magrittr %>%
