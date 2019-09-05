@@ -21,7 +21,9 @@
 #'   # x <- read_swissdata_json(set_path)
 #'
 #'   # read from s3
-#'   x <- read_swissdata_s3("ch.fso.bapau")
+#'   # x <- read_swissdata_s3("ch.fso.bapau")
+#'
+#' @importFrom dplyr mutate mutate_at as_tibble
 #'
 #' @author Christoph Sax
 #' @name read
@@ -125,7 +127,7 @@ read_swissdata_s3 <- function(set_id, bucket = "swissdata", test = TRUE) {
   dir.create(tdir)
   on.exit(unlink(tdir, recursive = TRUE))
 
-  Map(download.file, url = files, destfile = file.path(tdir, basename(files)))
+  Map(utils::download.file, url = files, destfile = file.path(tdir, basename(files)))
 
   ans <- read_swissdata_yaml(tdir, test = test)
   ans

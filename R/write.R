@@ -14,8 +14,8 @@
 #' @examples
 #'  z <- adecco
 #'  root_dir <- tempdir()
-#'  data_dir <- write_swissdata(z, dir, test = FALSE)
-#'  x <- read_swissdata_yaml(dir)
+#'  data_dir <- write_swissdata(z, root_dir, test = FALSE)
+#'  x <- read_swissdata_yaml(data_dir)
 #'  str(x)
 #'  str(z)
 #'  # remove all created directories

@@ -33,6 +33,9 @@
 #' z$meta$labels$idx_type$new
 #' z$meta$hierarchy$idx_type
 #'
+#' @importFrom dplyr filter sym
+#' @importFrom magrittr %>%
+#'
 #' @author Christoph Sax
 #' @name level_operations
 #' @export
@@ -64,7 +67,7 @@ level_rename <- function(x, dim, level, name) {
   if(length(hpos) == 1) {
     hpos <- TRUE
   } else {
-    hpos <- head(hpos, -1)
+    hpos <- utils::head(hpos, -1)
   }
   names(x$meta$hierarchy[[dim]][[hpos]]) <-
     names(x$meta$hierarchy[[dim]][[hpos]]) %>%

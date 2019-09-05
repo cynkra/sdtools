@@ -4,12 +4,14 @@
 \alias{str.swissdata}
 \title{Compact Display of the Swissdata Object}
 \usage{
-\method{str}{swissdata}(x, language = "en")
+\method{str}{swissdata}(object, language = "en", ...)
 }
 \arguments{
-\item{x}{swissdata object}
+\item{object}{swissdata object}
 
 \item{language}{language of the labels to be used for displaying the structure}
+
+\item{...}{further arguments passed to or from methods}
 }
 \value{
 Does not return anything but displays the swissdata structure.
@@ -20,7 +22,7 @@ Compactly displays the internal hierarchy and labels of swissdata objects.
 \examples{
 z <- adecco
 str(z)
-str(z, languge = "de")
+str(z, language = "de")
 
 }
 \author{

@@ -28,6 +28,8 @@
 #' z <- adecco
 #' test_swissdata(z)
 #'
+#' @importFrom dplyr select distinct
+#'
 #' @author Christoph Sax
 #' @export
 test_swissdata <- function(x) {
@@ -112,7 +114,7 @@ test_swissdata <- function(x) {
   if (sum(is_duplicated) > 0) {
     duplicates <- distinct(select(data, -value, -date)[is_duplicated, ])
     stop("Duplicates in series: \n\n",
-         paste(capture.output(duplicates), collapse = "\n"),
+         paste(utils::capture.output(duplicates), collapse = "\n"),
          call. = FALSE
          )
   }

@@ -43,6 +43,9 @@
 #' z$meta$labels$idx_type
 #' z$meta$hierarchy$idx_type
 #'
+#' @importFrom dplyr select filter everything sym
+#' @importFrom magrittr %>%
+#'
 #' @author Christoph Sax
 #' @name dim_operations
 #' @export

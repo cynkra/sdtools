@@ -19,6 +19,9 @@
 #' z2 <- level_rename(z, "idx_type", "ins", "new")
 #' marry(z, z2)
 #'
+#' @importFrom dplyr anti_join bind_rows
+#' @importFrom magrittr %>%
+#'
 #' @author Christoph Sax
 #' @export
 marry <- function(x, y) {

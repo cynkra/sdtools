@@ -4,23 +4,24 @@
 #'
 #' @param x swissdata object
 #' @param language language to be used for printing the labels
+#' @param ... further arguments passed to or from methods
 #'
 #' @return invisibly returns the swissdata object
 #'
 #' @examples
 #' z <- adecco
 #' print(z)
-#' print(z, languge = "de")
+#' print(z, language = "de")
 #'
 #' @seealso `str.swissdata`
 #'
 #' @author Karolis Koncevičius
 #' @export
-print.swissdata <- function(x, language = 'en') {
+print.swissdata <- function(x, language = 'en', ...) {
 
-  print(head(x$data))
+  print(utils::head(x$data))
   cat("\n")
-  str(x, language)
+  str.swissdata(x, language)
 
   invisible(x)
 }
@@ -30,22 +31,23 @@ print.swissdata <- function(x, language = 'en') {
 #'
 #' Compactly displays the internal hierarchy and labels of swissdata objects.
 #'
-#' @param x swissdata object
+#' @param object swissdata object
 #' @param language language of the labels to be used for displaying the structure
+#' @param ... further arguments passed to or from methods
 #'
 #' @return Does not return anything but displays the swissdata structure.
 #'
 #' @examples
 #' z <- adecco
 #' str(z)
-#' str(z, languge = "de")
+#' str(z, language = "de")
 #'
 #' @author Karolis Koncevičius
 #' @export
-str.swissdata <- function(x, language = 'en') {
+str.swissdata <- function(object, language = 'en', ...) {
 
-  meta <- x$meta
-  labels <- x$meta$labels
+  meta <- object$meta
+  labels <- object$meta$labels
   hierarchy <- meta$hierarchy
 
   # if a dim is missing in hierarchy, use names from labels

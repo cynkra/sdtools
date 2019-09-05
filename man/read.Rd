@@ -40,7 +40,7 @@ and Amazon Simple Storage Service (s3)
   # x <- read_swissdata_json(set_path)
 
   # read from s3
-  x <- read_swissdata_s3("ch.fso.bapau")
+  # x <- read_swissdata_s3("ch.fso.bapau")
 
 }
 \author{
