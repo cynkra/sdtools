@@ -47,18 +47,20 @@ test_swissdata <- function(x) {
   have.tos <- c("title", "source_name", "source_url", "units", "dim_order", "aggregate", "labels", "updated_utc")
   nice.to.haves <- c("details", "hierarchy", "sha1", "dataseries")
   if (length(setdiff(have.tos, names(meta))) > 0) {
-    stop("missing elements in meta: ",
-         paste(setdiff(have.tos, names(meta)), collapse = ", "),
-         call. = FALSE
-         )
+    stop(
+      "missing elements in meta: ",
+      paste(setdiff(have.tos, names(meta)), collapse = ", "),
+      call. = FALSE
+      )
   }
 
   # meta cannot have unexpected fields
   if (length(setdiff(names(meta), c(have.tos, nice.to.haves))) > 0) {
-    stop("invalid elements in meta: ",
-         paste(setdiff(names(meta), c(have.tos, nice.to.haves)), collapse = ", "),
-         call. = FALSE
-         )
+    stop(
+      "invalid elements in meta: ",
+      paste(setdiff(names(meta), c(have.tos, nice.to.haves)), collapse = ", "),
+      call. = FALSE
+      )
   }
 
   # values cannot have NAs
@@ -81,13 +83,14 @@ test_swissdata <- function(x) {
   dims <- colnames(data)[1:(ncol(data)-2)]
   dims.meta <- setdiff(names(meta$labels), "dimnames")
   if (!(identical(sort(dims), sort(dims.meta)))) {
-    stop("dimensions in data (",
-         paste(sort(dims), collapse = ", "),
-         ") differ from those in meta$labels (",
-         paste(sort(dims.meta), collapse = ", "),
-         ")",
-         call. = FALSE
-         )
+    stop(
+      "dimensions in data (",
+      paste(sort(dims), collapse = ", "),
+      ") differ from those in meta$labels (",
+      paste(sort(dims.meta), collapse = ", "),
+      ")",
+      call. = FALSE
+      )
   }
 
 
@@ -99,11 +102,12 @@ test_swissdata <- function(x) {
 
     # do data ids have a label in meta
     if (length(setdiff(unique(data[[dim.i]]), names(meta$labels[[dim.i]]))) > 0) {
-      stop("data meta mismatch - values in dim '", dim.i, "' differ: \n\ndata: ",
-           paste(unique(data[[dim.i]]), collapse = ", "), "\n\nmeta$labels: ",
-           paste(names(meta$labels[[dim.i]]), collapse = ", "),
-           call. = FALSE
-           )
+      stop(
+        "data meta mismatch - values in dim '", dim.i, "' differ: \n\ndata: ",
+        paste(unique(data[[dim.i]]), collapse = ", "), "\n\nmeta$labels: ",
+        paste(names(meta$labels[[dim.i]]), collapse = ", "),
+        call. = FALSE
+        )
     }
   }
 
@@ -111,19 +115,21 @@ test_swissdata <- function(x) {
   is_duplicated <- duplicated(select(data, -value))
   if (sum(is_duplicated) > 0) {
     duplicates <- distinct(select(data, -value, -date)[is_duplicated, ])
-    stop("Duplicates in series: \n\n",
-         paste(capture.output(duplicates), collapse = "\n"),
-         call. = FALSE
-         )
+    stop(
+      "Duplicates in series: \n\n",
+      paste(capture.output(duplicates), collapse = "\n"),
+      call. = FALSE
+      )
   }
 
   # do we have labels for dimnames?
   stopifnot("dimnames" %in% names(meta$labels))
   if (!identical(sort(names(meta$labels$dimnames)), sort(dims))) {
-    stop("dim mismatch \ndata: ",
-         paste(sort(dims), collapse = ", "), "\nmeta dimnames : ",
-         paste(sort(names(meta$labels$dimnames)), collapse = ", ")
-         )
+    stop(
+      "dim mismatch \ndata: ",
+      paste(sort(dims), collapse = ", "), "\nmeta dimnames : ",
+      paste(sort(names(meta$labels$dimnames)), collapse = ", ")
+      )
   }
 
   # are languages specified correctly
