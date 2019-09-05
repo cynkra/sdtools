@@ -6,7 +6,7 @@ Authors@R: c(
   person("Karolis", "Koncevi\u00e7ius", email = "karolis.koncevicius@gmail.com", role = "aut")
   )
 Description: Provides tools for manipulation of swissdata objects
-  The functionality includes the following types operations:
+  The functionality includes the following types of operations:
   1) printing objects and inspecting their validity,
   2) manipulating dimensions and dimension levels,
   3) combining two objects into one,
