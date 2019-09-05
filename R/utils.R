@@ -1,4 +1,4 @@
-#' @export
+# Make Sure the Requested Path Exists and Is Empty
 ensure_path <- function(path) {
   if (!file.exists(path)) {
     dir.create(path, recursive = TRUE)
