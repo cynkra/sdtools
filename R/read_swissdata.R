@@ -110,26 +110,3 @@ write_swissdata <- function(x, path_out) {
 }
 
 
-empty_list_to_null <- function(x) {
-  if (is.list(x) && length(x) == 0) return(NULL)
-  if (!is.list(x)) return(x)
-  lapply(x, empty_list_to_null)
-}
-
-null_to_empty_string <- function(x) {
-  if (is.null(x)) return("")
-  if (!is.null(x) & !is.list(x)) return(x)
-  lapply(x, null_to_empty_string)
-}
-
-
-
-dots_to_underscore <- function(x) {
-  if (!is.list(x)) return(x)
-  x <- setNames(x, gsub(".", "_", names(x), fixed = TRUE))
-  lapply(x, dots_to_underscore)
-}
-
-
-
-
