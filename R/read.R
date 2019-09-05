@@ -9,7 +9,7 @@
 #' @param set_id swissdata series id used for reading the object from "Amazon s3".
 #' @param bucket name for "Amazon s3" (default = "swissdata")
 #'
-#' @return an object of class swissdata
+#' @return An object of class swissdata
 #'
 #' @examples
 #'   # read from yaml

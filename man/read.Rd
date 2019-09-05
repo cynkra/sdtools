@@ -23,7 +23,7 @@ read_swissdata_s3(set_id, bucket = "swissdata", test = TRUE)
 \item{bucket}{name for "Amazon s3" (default = "swissdata")}
 }
 \value{
-an object of class swissdata
+An object of class swissdata
 }
 \description{
 Functions for obtaining swissdata objects from different sources.
