@@ -13,9 +13,10 @@ Encoding: UTF-8
 LazyData: true
 URL: https://github.com/christophsax/sdtools
 BugReports: https://github.com/christophsax/sdtools/issues
+Depends: R (>= 3.5.0)
 Imports:
     data.table,
-    dplyr
+    dplyr,
     httr,
     readr,
     yaml
