@@ -14,7 +14,7 @@
 #'
 #' @seealso `str.swissdata`
 #'
-#' @author Christoph Sax
+#' @author Karolis Koncevičius
 #' @export
 print.swissdata <- function(x, language = 'en') {
 

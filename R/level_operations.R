@@ -33,7 +33,7 @@
 #' z$meta$labels$idx_type$new
 #' z$meta$hierarchy$idx_type
 #'
-#' @author Christoph Sax
+#' @author Karolis Koncevičius
 #' @name level_operations
 #' @export
 level_drop <- function(x, dim, level) {

@@ -52,5 +52,5 @@ z$meta$hierarchy$idx_type
 
 }
 \author{
-Christoph Sax
+Karolis Koncevičius
 }

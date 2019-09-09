@@ -12,7 +12,7 @@
 #' str(z)
 #' str(z, languge = "de")
 #'
-#' @author Christoph Sax
+#' @author Karolis Koncevičius
 #' @export
 str.swissdata <- function(x, language = 'en') {
 
