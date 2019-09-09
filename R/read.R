@@ -1,10 +1,34 @@
-# set_path <- "/Users/christoph/git/swissdata/swissdata/wd/ch.fso.besta.mjr"
-# read_swissdata(set_path)
+#' Download and Read Swissdata Objects
+#'
+#' Functions for obtaining swissdata objects from different sources.
+#' Possible input formats include: yaml files, json files,
+#' and Amazon Simple Storage Service (s3)
+#'
+#' @param set_path directory containing the files to be read
+#' @param test should `test_swissdata()` be run on the newly-read object (default = TRUE)
+#' @param set_id swissdata series id used for reading the object from "Amazon s3".
+#' @param bucket name for "Amazon s3" (default = "swissdata")
+#'
+#' @return An object of class swissdata
+#'
+#' @examples
+#'   # read from yaml
+#'   # set_path <- "some/path"
+#'   # x <- read_swissdata_yaml(set_path)
+#'
+#'   # read from json
+#'   # set_path <- "some/path"
+#'   # x <- read_swissdata_json(set_path)
+#'
+#'   # read from s3
+#'   # x <- read_swissdata_s3("ch.fso.bapau")
+#'
+#' @importFrom dplyr mutate mutate_at as_tibble
+#'
+#' @author Christoph Sax
+#' @name read
 #' @export
-#' @import dplyr
-read_swissdata <- function(..., test = TRUE) {
-
-  set_path <- file.path(...)
+read_swissdata_yaml <- function(set_path, test = TRUE) {
 
   set_path <- normalizePath(set_path, mustWork = TRUE)
 
@@ -37,12 +61,6 @@ read_swissdata <- function(..., test = TRUE) {
     meta$units <- list(all = list(en = " "))
   }
 
-
-  # data <- readr::read_csv(file.csv, col_types = readr::cols(
-  #   date = readr::col_date(format = ""),
-  #   value = readr::col_double(),
-  #   .default = readr::col_character()
-  # ))
   data <- as_tibble(data.table::fread(file.csv, colClasses=c(date = "Date", value = "numeric")))
   id_cols <- setdiff(names(data), c("date", "value"))
   data <-
@@ -65,8 +83,9 @@ read_swissdata <- function(..., test = TRUE) {
   z
 }
 
+#' @rdname read
 #' @export
-read_swissdata_json <- function(set_path) {
+read_swissdata_json <- function(set_path, test = TRUE) {
 
   set_path <- normalizePath(set_path, mustWork = TRUE)
 
@@ -80,16 +99,10 @@ read_swissdata_json <- function(set_path) {
   stopifnot(identical(set_id, gsub(".csv", "", basename(file.csv))))
 
   meta <- jsonlite::read_json(file.json)
-  # data <- readr::read_csv(file.csv, col_types = readr::cols(
-  #   date = readr::col_date(format = ""),
-  #   value = readr::col_double(),
-  #   .default = readr::col_character()
-  # ))
   data <- as_tibble(data.table::fread(file.csv, colClasses=c(date = "Date", value = "numeric")))
   id_cols <- setdiff(names(data), c("date", "value"))
   data <-
     mutate(mutate_at(data, id_cols, as.character), date = as.Date(date))
-
 
   z <- list(
     meta = dots_to_underscore(empty_list_to_null(meta)),
@@ -98,38 +111,25 @@ read_swissdata_json <- function(set_path) {
   )
 
   class(z) <- "swissdata"
+  if (test) ans <- test_swissdata(z)
+  message("successfully read: ", set_id)
   z
 }
 
+#' @rdname read
 #' @export
-write_swissdata <- function(x, path_out) {
-  path_out_set <- file.path(path_out, x$set_id)
-  ensure_path(path_out_set)
-  test_swissdata(x)
-  swissdata::write_data_meta(x$data, x$meta, set_id = x$set_id, .path_out = path_out_set)
+read_swissdata_s3 <- function(set_id, bucket = "swissdata", test = TRUE) {
+
+  base  <- paste0("https://sos-ch-dk-2.exo.io/", bucket, "/")
+  files <- (paste0(base, set_id, "/", set_id, c(".csv", ".yaml")))
+
+  tdir <- tempfile()
+  dir.create(tdir)
+  on.exit(unlink(tdir, recursive = TRUE))
+
+  Map(utils::download.file, url = files, destfile = file.path(tdir, basename(files)))
+
+  ans <- read_swissdata_yaml(tdir, test = test)
+  ans
 }
-
-
-empty_list_to_null <- function(x) {
-  if (is.list(x) && length(x) == 0) return(NULL)
-  if (!is.list(x)) return(x)
-  lapply(x, empty_list_to_null)
-}
-
-null_to_empty_string <- function(x) {
-  if (is.null(x)) return("")
-  if (!is.null(x) & !is.list(x)) return(x)
-  lapply(x, null_to_empty_string)
-}
-
-
-
-dots_to_underscore <- function(x) {
-  if (!is.list(x)) return(x)
-  x <- setNames(x, gsub(".", "_", names(x), fixed = TRUE))
-  lapply(x, dots_to_underscore)
-}
-
-
-
 

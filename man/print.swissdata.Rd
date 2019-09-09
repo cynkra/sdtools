@@ -4,12 +4,14 @@
 \alias{print.swissdata}
 \title{Print Swissdata Object}
 \usage{
-\method{print}{swissdata}(x, language = "en")
+\method{print}{swissdata}(x, language = "en", ...)
 }
 \arguments{
 \item{x}{swissdata object}
 
 \item{language}{language to be used for printing the labels}
+
+\item{...}{further arguments passed to or from methods}
 }
 \value{
 invisibly returns the swissdata object
@@ -20,7 +22,7 @@ Function for printing swissdata objects
 \examples{
 z <- adecco
 print(z)
-print(z, languge = "de")
+print(z, language = "de")
 
 }
 \seealso{

@@ -22,16 +22,16 @@
 #'
 #' # rename the existing level "ins" to "new" in dimension "idx_type"
 #' z <- adecco
+#' str(z)
 #' z <- level_rename(z, dim = "idx_type", level = "ins", name = "new")
-#' z$data
-#' z$meta$labels$idx_type$new
-#' z$meta$hierarchy$idx_type
+#' str(z)
 #'
 #' # drop existing level "new" from dimension "idx_type"
 #' z <- level_drop(z, dim = "idx_type", level = "new")
-#' z$data
-#' z$meta$labels$idx_type$new
-#' z$meta$hierarchy$idx_type
+#' str(z)
+#'
+#' @importFrom dplyr filter sym
+#' @importFrom magrittr %>%
 #'
 #' @author Karolis Koncevičius
 #' @name level_operations
@@ -44,7 +44,7 @@ level_drop <- function(x, dim, level) {
     x$data %>%
     filter(!! sym(dim) != level)
 
-  hpos <- rfind(x$meta$hierarchy[[dim]], level)
+  hpos <- find_list_by_name(x$meta$hierarchy[[dim]], level)
   x$meta$hierarchy[[dim]][[hpos]] <- NULL
   x$meta$labels[[dim]][level] <- NULL
 
@@ -60,11 +60,11 @@ level_rename <- function(x, dim, level, name) {
 
   x$data[[dim]] <- replace(x$data[[dim]], x$data[[dim]]==level, name)
 
-  hpos <- rfind(x$meta$hierarchy[[dim]], level)
+  hpos <- find_list_by_name(x$meta$hierarchy[[dim]], level)
   if(length(hpos) == 1) {
     hpos <- TRUE
   } else {
-    hpos <- head(hpos, -1)
+    hpos <- utils::head(hpos, -1)
   }
   names(x$meta$hierarchy[[dim]][[hpos]]) <-
     names(x$meta$hierarchy[[dim]][[hpos]]) %>%

@@ -39,16 +39,13 @@ from \code{x$data} are removed.
 
 # rename the existing level "ins" to "new" in dimension "idx_type"
 z <- adecco
+str(z)
 z <- level_rename(z, dim = "idx_type", level = "ins", name = "new")
-z$data
-z$meta$labels$idx_type$new
-z$meta$hierarchy$idx_type
+str(z)
 
 # drop existing level "new" from dimension "idx_type"
 z <- level_drop(z, dim = "idx_type", level = "new")
-z$data
-z$meta$labels$idx_type$new
-z$meta$hierarchy$idx_type
+str(z)
 
 }
 \author{

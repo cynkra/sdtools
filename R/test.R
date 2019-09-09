@@ -28,6 +28,8 @@
 #' z <- adecco
 #' test_swissdata(z)
 #'
+#' @importFrom dplyr select distinct
+#'
 #' @author Christoph Sax
 #' @export
 test_swissdata <- function(x) {
@@ -51,7 +53,7 @@ test_swissdata <- function(x) {
       "missing elements in meta: ",
       paste(setdiff(have.tos, names(meta)), collapse = ", "),
       call. = FALSE
-      )
+    )
   }
 
   # meta cannot have unexpected fields
@@ -60,7 +62,7 @@ test_swissdata <- function(x) {
       "invalid elements in meta: ",
       paste(setdiff(names(meta), c(have.tos, nice.to.haves)), collapse = ", "),
       call. = FALSE
-      )
+    )
   }
 
   # values cannot have NAs
@@ -107,7 +109,7 @@ test_swissdata <- function(x) {
         paste(unique(data[[dim.i]]), collapse = ", "), "\n\nmeta$labels: ",
         paste(names(meta$labels[[dim.i]]), collapse = ", "),
         call. = FALSE
-        )
+      )
     }
   }
 
@@ -117,9 +119,9 @@ test_swissdata <- function(x) {
     duplicates <- distinct(select(data, -value, -date)[is_duplicated, ])
     stop(
       "Duplicates in series: \n\n",
-      paste(capture.output(duplicates), collapse = "\n"),
+      paste(utils::capture.output(duplicates), collapse = "\n"),
       call. = FALSE
-      )
+    )
   }
 
   # do we have labels for dimnames?
@@ -128,8 +130,9 @@ test_swissdata <- function(x) {
     stop(
       "dim mismatch \ndata: ",
       paste(sort(dims), collapse = ", "), "\nmeta dimnames : ",
-      paste(sort(names(meta$labels$dimnames)), collapse = ", ")
-      )
+      paste(sort(names(meta$labels$dimnames)), collapse = ", "),
+      call. = FALSE
+    )
   }
 
   # are languages specified correctly
