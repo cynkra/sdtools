@@ -4,11 +4,14 @@
 \alias{hierarchy_operations}
 \alias{hierarchy_add}
 \alias{hierarchy_move}
+\alias{hierarchy_reorder}
 \title{Swissdata Hierarchy Operations}
 \usage{
 hierarchy_add(x, dim, level, parent, label = level)
 
 hierarchy_move(x, dim, level, parent)
+
+hierarchy_reorder(x, dim, order, parent)
 }
 \arguments{
 \item{x}{swissdata object}
@@ -17,10 +20,12 @@ hierarchy_move(x, dim, level, parent)
 
 \item{level}{single level ID from \code{dim}}
 
-\item{parent}{single leved ID from \code{dim} where the \code{level} will be added.
-If left empty then the top position in the hierarchy is assumed.k}
+\item{parent}{single level ID from \code{dim} where the \code{level} will be added.
+If left empty then the top position in the hierarchy is assumed.}
 
 \item{label}{English label for the newly added hierarchy level}
+
+\item{order}{a character vector specifying the order of levels in the hierarchy}
 }
 \value{
 a modified swissdata object
@@ -29,11 +34,17 @@ a modified swissdata object
 A set of functions for manipulating hierarchy levels of swissdata objects.
 }
 \details{
-\code{hierarchy_add} adds a new grouping level to the hierarchy, \code{hierarchy_move}
-changes the hierarchy positoin of the specific dimension level.
+\code{hierarchy_add} adds a new level to the hierarchy, \code{hierarchy_move} moves
+an existing level to a new parent, \code{hierarchy_reorder} changes the order of
+under specified parent level.
 
 Internally these functions incorporate the requested changes into a given
 swissdata object by altering the \code{x$hierarchy} field.
+
+In all cases when parent is \code{NULL} or missing the top level of the hierarchy
+is assumed. For \code{hierarchy_reorder} when \code{order} is only specified for a few
+available children - the provided levels are reordered and the rest are moved
+to the back of the hierarchy.
 }
 \examples{
 # add new label "d0" to top level of "idx_type"
@@ -46,6 +57,9 @@ z <- hierarchy_move(z, dim = "idx_type", level = "d0", parent = "unw")
 str(z)
 # move the whole "sch" sub-hierarchy within "scs"
 z <- hierarchy_move(z, dim = "idx_type", level = "sch", parent = "scs")
+str(z)
+# reorder the children within "sch"
+z <- hierarchy_reorder(z, dim = "idx_type", order = c("ins", "unw", "pzua"), parent = "sch")
 str(z)
 
 }

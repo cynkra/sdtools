@@ -25,7 +25,7 @@ print()                # prints top 5 rows of the data and the structure of hier
 test_swissdata()       # tests the validity of swissdata object
 ```
 
-#### Manipulating Dimensions and Levels ####
+#### Manipulating Dimensions, Levels, and Hierarchy ####
 
 ```r
 dim_add()              # adds a new dimension to the data
@@ -34,6 +34,10 @@ dim_rename()           # renames the dimension
 
 level_drop()           # removes a level from the specified dimension
 level_rename()         # renames a level in the specified dimension
+
+hierarchy_add()        # adds a new level to the hierarchy
+hierarchy_move()       # moves an existing level to a new parent
+hierarchy_reorder()    # reorders the levels under specified parent
 ```
 
 #### Combining ####
