@@ -12,16 +12,14 @@
 #' @return An object of class swissdata
 #'
 #' @examples
-#'   # read from yaml
-#'   # set_path <- "some/path"
-#'   # x <- dataset_read_yaml(set_path)
 #'
-#'   # read from json
-#'   # set_path <- "some/path"
-#'   # x <- dataset_read_json(set_path)
+#' tf <- tempfile()
+#' dataset_write_yaml(adecco, tf)
+#' dataset_read_yaml(file.path(tf, "ch_adecco_sjmi"))
 #'
-#'   # read from s3
-#'   # x <- dataset_read_s3("ch.fso.bapau")
+#' # read from s3
+#' dataset_read_s3("ch_adecco_sjmi", bucket = "dataseries")
+#' dataset_read_s3("ch_adecco_sjmi", bucket = "swissdata")
 #'
 #' @importFrom dplyr mutate mutate_at as_tibble
 #'
