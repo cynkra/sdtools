@@ -114,6 +114,7 @@ dataset_validate <- function(x) {
   }
 
   # are the key columns unique?
+  value <- NULL  # appease R CMD check
   is_duplicated <- duplicated(select(data, -value))
   if (sum(is_duplicated) > 0) {
     duplicates <- distinct(select(data, -value, -date)[is_duplicated, ])
