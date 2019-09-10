@@ -22,7 +22,7 @@ A set of functions for manipulating swissdata datasets.
 
 \code{dataset_merge} adds dimension levels that are present only in \code{y} to \code{x}.
 As a result in the case where the same dimensions or levels are present
-in both of the objects - the one from \code{x} is selected. \code{test_swissdata()}
+in both of the objects - the one from \code{x} is selected. \code{dataset_validate()}
 function is executed before returning the output in order to make sure the
 combination of the two objects was successful.
 }

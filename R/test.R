@@ -1,6 +1,6 @@
-#' Test Swissdata
+#' Validate Swissdata Dataset
 #'
-#' Extended set of tests for swissdata objects.
+#' Extended set of validation tests for swissdata objects.
 #'
 #' The function runs several tests on a swissdata object:\cr\cr
 #' 1. "data" slot is a `tibble`\cr
@@ -26,13 +26,13 @@
 #'
 #' @examples
 #' z <- adecco
-#' test_swissdata(z)
+#' dataset_validate(z)
 #'
 #' @importFrom dplyr select distinct
 #'
 #' @author Christoph Sax
 #' @export
-test_swissdata <- function(x) {
+dataset_validate <- function(x) {
   stopifnot("set_id" %in% names(x))
   if (grepl(".", x$set_id, fixed = TRUE)) stop("set_id must not contain dots (.)")
 

@@ -7,7 +7,7 @@
 #'
 #' @param x swissdata object to be written
 #' @param path_out path for top-level directory for storing swissdata objects
-#' @param test should `test_swissdata()` be run before writing the object (default = TRUE)
+#' @param test should `dataset_validate()` be run before writing the object (default = TRUE)
 #'
 #' @return If operation is successful the destination directory for the object is returned invisibly.
 #'
@@ -28,7 +28,7 @@ write_swissdata <- function(x, path_out, test = TRUE) {
   path_out_set <- file.path(path_out, x$set_id)
   ensure_path(path_out_set)
 
-  if (test) ans <- test_swissdata(x)
+  if (test) ans <- dataset_validate(x)
 
   # calculate hash of yaml to be generated (without the date as that MUST change)
   yaml_new <- yaml::as.yaml(x$meta)

@@ -12,7 +12,7 @@ write_swissdata(x, path_out, test = TRUE)
 
 \item{path_out}{path for top-level directory for storing swissdata objects}
 
-\item{test}{should \code{test_swissdata()} be run before writing the object (default = TRUE)}
+\item{test}{should \code{dataset_validate()} be run before writing the object (default = TRUE)}
 }
 \value{
 If operation is successful the destination directory for the object is returned invisibly.

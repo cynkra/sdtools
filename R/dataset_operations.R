@@ -6,7 +6,7 @@
 #'
 #' `dataset_merge` adds dimension levels that are present only in `y` to `x`.
 #' As a result in the case where the same dimensions or levels are present
-#' in both of the objects - the one from `x` is selected. `test_swissdata()`
+#' in both of the objects - the one from `x` is selected. `dataset_validate()`
 #' function is executed before returning the output in order to make sure the
 #' combination of the two objects was successful.
 #'
@@ -41,7 +41,7 @@ dataset_merge <- function(x, y) {
   z$data <- newdata
   z$meta$hierarchy <- merge_two_lists(y$meta$hierarchy, x$meta$hierarchy)
   z$meta$labels <- merge_two_lists(y$meta$labels, x$meta$labels)
-  test_swissdata(z)
+  dataset_validate(z)
   z
 }
 

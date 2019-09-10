@@ -5,7 +5,7 @@
 #' and Amazon Simple Storage Service (s3)
 #'
 #' @param set_path directory containing the files to be read
-#' @param test should `test_swissdata()` be run on the newly-read object (default = TRUE)
+#' @param test should `dataset_validate()` be run on the newly-read object (default = TRUE)
 #' @param set_id swissdata series id used for reading the object from "Amazon s3".
 #' @param bucket name for "Amazon s3" (default = "swissdata")
 #'
@@ -78,7 +78,7 @@ dataset_read_yaml <- function(set_path, test = TRUE) {
 
   class(z) <- "swissdata"
 
-  if (test) ans <- test_swissdata(z)
+  if (test) ans <- dataset_validate(z)
   message("successfully read: ", set_id)
   z
 }
@@ -111,7 +111,7 @@ dataset_read_json <- function(set_path, test = TRUE) {
   )
 
   class(z) <- "swissdata"
-  if (test) ans <- test_swissdata(z)
+  if (test) ans <- dataset_validate(z)
   message("successfully read: ", set_id)
   z
 }

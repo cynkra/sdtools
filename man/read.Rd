@@ -16,7 +16,7 @@ dataset_read_s3(set_id, bucket = "swissdata", test = TRUE)
 \arguments{
 \item{set_path}{directory containing the files to be read}
 
-\item{test}{should \code{test_swissdata()} be run on the newly-read object (default = TRUE)}
+\item{test}{should \code{dataset_validate()} be run on the newly-read object (default = TRUE)}
 
 \item{set_id}{swissdata series id used for reading the object from "Amazon s3".}
 
