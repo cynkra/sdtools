@@ -22,7 +22,6 @@ Imports:
     dplyr,
     httr,
     jsonlite,
-    magrittr,
     readr,
     yaml
 Roxygen: list(markdown = TRUE)

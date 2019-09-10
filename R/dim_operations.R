@@ -36,7 +36,6 @@
 #' str(z)
 #'
 #' @importFrom dplyr select filter everything sym
-#' @importFrom magrittr %>%
 #'
 #' @author Christoph Sax
 #' @author Karolis Koncevičius
@@ -60,10 +59,8 @@ dim_add <- function(x, dim = "geo", level = "0", label = level) {
 dim_drop <- function(x, dim = "trans", level = "ind") {
   stopifnot(level %in% x$data[[dim]])
 
-  x$data <-
-    x$data %>%
-    filter(!! sym(dim) == level) %>%
-    select(- !! sym(dim))
+  x$data <- filter(x$data, !! sym(dim) == level)
+  x$data <- select(x$data, - !! sym(dim))
 
   x$meta$dim_order <- setdiff(x$meta$dim_order, dim)
   x$meta$hierarchy[dim] <- NULL
