@@ -9,11 +9,11 @@ List of available function.
 #### Reading and Writing ####
 
 ```r
-read_swissdata_yaml()  # reads swissdata object stored in the form of yaml files
-read_swissdata_json()  # reads swissdata object stored in the form of json files
-read_swissdata_s3()    # reads swissdata object from Amazon S3 bucket.
+dataset_read_yaml()    # reads swissdata object stored in the form of yaml files
+dataset_read_json()    # reads swissdata object stored in the form of json files
+dataset_read_s3()      # reads swissdata object from Amazon S3 bucket.
 
-write_swissdata()      # saves swissdata object in the form of yaml files
+dataset_write_yaml()   # saves swissdata object in the form of yaml files
 ```
 
 #### Printing and Validating ####
@@ -22,7 +22,13 @@ write_swissdata()      # saves swissdata object in the form of yaml files
 str()                  # prints the sturcture of the swissdata hierarchy
 print()                # prints top 5 rows of the data and the structure of hierarchy
 
-test_swissdata()       # tests the validity of swissdata object
+dataset_validate()     # tests the validity of swissdata object
+```
+
+#### Manipulating Datasets ####
+
+```r
+dataset_merge()        # combines two swissdata objects into one
 ```
 
 #### Manipulating Dimensions, Levels, and Hierarchy ####
@@ -38,12 +44,6 @@ level_rename()         # renames a level in the specified dimension
 hierarchy_add()        # adds a new level to the hierarchy
 hierarchy_move()       # moves an existing level to a new parent
 hierarchy_reorder()    # reorders the levels under specified parent
-```
-
-#### Combining ####
-
-```r
-marry()                # combines two swissdata objects into one
 ```
 
 ## Installation ##

@@ -5,7 +5,7 @@
 #' and Amazon Simple Storage Service (s3)
 #'
 #' @param set_path directory containing the files to be read
-#' @param test should `test_swissdata()` be run on the newly-read object (default = TRUE)
+#' @param test should `dataset_validate()` be run on the newly-read object (default = TRUE)
 #' @param set_id swissdata series id used for reading the object from "Amazon s3".
 #' @param bucket name for "Amazon s3" (default = "swissdata")
 #'
@@ -14,21 +14,21 @@
 #' @examples
 #'   # read from yaml
 #'   # set_path <- "some/path"
-#'   # x <- read_swissdata_yaml(set_path)
+#'   # x <- dataset_read_yaml(set_path)
 #'
 #'   # read from json
 #'   # set_path <- "some/path"
-#'   # x <- read_swissdata_json(set_path)
+#'   # x <- dataset_read_json(set_path)
 #'
 #'   # read from s3
-#'   # x <- read_swissdata_s3("ch.fso.bapau")
+#'   # x <- dataset_read_s3("ch.fso.bapau")
 #'
 #' @importFrom dplyr mutate mutate_at as_tibble
 #'
 #' @author Christoph Sax
 #' @name read
 #' @export
-read_swissdata_yaml <- function(set_path, test = TRUE) {
+dataset_read_yaml <- function(set_path, test = TRUE) {
 
   set_path <- normalizePath(set_path, mustWork = TRUE)
 
@@ -78,14 +78,14 @@ read_swissdata_yaml <- function(set_path, test = TRUE) {
 
   class(z) <- "swissdata"
 
-  if (test) ans <- test_swissdata(z)
+  if (test) ans <- dataset_validate(z)
   message("successfully read: ", set_id)
   z
 }
 
 #' @rdname read
 #' @export
-read_swissdata_json <- function(set_path, test = TRUE) {
+dataset_read_json <- function(set_path, test = TRUE) {
 
   set_path <- normalizePath(set_path, mustWork = TRUE)
 
@@ -111,14 +111,14 @@ read_swissdata_json <- function(set_path, test = TRUE) {
   )
 
   class(z) <- "swissdata"
-  if (test) ans <- test_swissdata(z)
+  if (test) ans <- dataset_validate(z)
   message("successfully read: ", set_id)
   z
 }
 
 #' @rdname read
 #' @export
-read_swissdata_s3 <- function(set_id, bucket = "swissdata", test = TRUE) {
+dataset_read_s3 <- function(set_id, bucket = "swissdata", test = TRUE) {
 
   base  <- paste0("https://sos-ch-dk-2.exo.io/", bucket, "/")
   files <- (paste0(base, set_id, "/", set_id, c(".csv", ".yaml")))
@@ -129,7 +129,7 @@ read_swissdata_s3 <- function(set_id, bucket = "swissdata", test = TRUE) {
 
   Map(utils::download.file, url = files, destfile = file.path(tdir, basename(files)))
 
-  ans <- read_swissdata_yaml(tdir, test = test)
+  ans <- dataset_read_yaml(tdir, test = test)
   ans
 }
 
