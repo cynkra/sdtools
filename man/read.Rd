@@ -2,16 +2,16 @@
 % Please edit documentation in R/read.R
 \name{read}
 \alias{read}
-\alias{read_swissdata_yaml}
-\alias{read_swissdata_json}
-\alias{read_swissdata_s3}
+\alias{dataset_read_yaml}
+\alias{dataset_read_json}
+\alias{dataset_read_s3}
 \title{Download and Read Swissdata Objects}
 \usage{
-read_swissdata_yaml(set_path, test = TRUE)
+dataset_read_yaml(set_path, test = TRUE)
 
-read_swissdata_json(set_path, test = TRUE)
+dataset_read_json(set_path, test = TRUE)
 
-read_swissdata_s3(set_id, bucket = "swissdata", test = TRUE)
+dataset_read_s3(set_id, bucket = "swissdata", test = TRUE)
 }
 \arguments{
 \item{set_path}{directory containing the files to be read}
@@ -33,14 +33,14 @@ and Amazon Simple Storage Service (s3)
 \examples{
   # read from yaml
   # set_path <- "some/path"
-  # x <- read_swissdata_yaml(set_path)
+  # x <- dataset_read_yaml(set_path)
 
   # read from json
   # set_path <- "some/path"
-  # x <- read_swissdata_json(set_path)
+  # x <- dataset_read_json(set_path)
 
   # read from s3
-  # x <- read_swissdata_s3("ch.fso.bapau")
+  # x <- dataset_read_s3("ch.fso.bapau")
 
 }
 \author{
