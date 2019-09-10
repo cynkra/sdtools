@@ -14,7 +14,7 @@
 #' @examples
 #'  z <- adecco
 #'  root_dir <- tempdir()
-#'  data_dir <- write_swissdata(z, root_dir, test = FALSE)
+#'  data_dir <- dataset_write_yaml(z, root_dir, test = FALSE)
 #'  x <- dataset_read_yaml(data_dir)
 #'  str(x)
 #'  str(z)
@@ -24,7 +24,7 @@
 #' @author Christoph Sax
 #' @name write
 #' @export
-write_swissdata <- function(x, path_out, test = TRUE) {
+dataset_write_yaml <- function(x, path_out, test = TRUE) {
   path_out_set <- file.path(path_out, x$set_id)
   ensure_path(path_out_set)
 

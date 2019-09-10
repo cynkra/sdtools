@@ -2,10 +2,10 @@
 % Please edit documentation in R/write.R
 \name{write}
 \alias{write}
-\alias{write_swissdata}
+\alias{dataset_write_yaml}
 \title{Write Swissdata Objects}
 \usage{
-write_swissdata(x, path_out, test = TRUE)
+dataset_write_yaml(x, path_out, test = TRUE)
 }
 \arguments{
 \item{x}{swissdata object to be written}
@@ -27,7 +27,7 @@ The directory containing all the files for the saved swissdata object will be st
 \examples{
  z <- adecco
  root_dir <- tempdir()
- data_dir <- write_swissdata(z, root_dir, test = FALSE)
+ data_dir <- dataset_write_yaml(z, root_dir, test = FALSE)
  x <- dataset_read_yaml(data_dir)
  str(x)
  str(z)
