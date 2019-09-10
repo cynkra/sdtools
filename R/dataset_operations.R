@@ -1,13 +1,14 @@
-#' Marry Two Swissdata Objects
+#' Swissdata Dataset Operations
 #'
-#' Combine the dimension levels from two swissdata objects.
+#' A set of functions for manipulating swissdata datasets.
 #'
-#' The function adds dimension levels that are present only in `y` to `x`.
+#' `dataset_merge` combines the dimension levels from two swissdata datasets.
+#'
+#' `dataset_merge` adds dimension levels that are present only in `y` to `x`.
 #' As a result in the case where the same dimensions or levels are present
-#' in both of the objects - the one from `x` is selected.
-#'
-#' `test_swissdata()` function is executed before returning the output
-#' in order to make sure the combination of the two objects was successful.
+#' in both of the objects - the one from `x` is selected. `dataset_validate()`
+#' function is executed before returning the output in order to make sure the
+#' combination of the two objects was successful.
 #'
 #' @param x original swissdata object
 #' @param y additional swissdata object
@@ -15,18 +16,19 @@
 #' @return a combined swissdata object
 #'
 #' @examples
+#' # merge two distinct datasets
 #' z1 <- adecco
 #' str(z1)
 #' z2 <- level_rename(z1, "idx_type", "ins", "new")
 #' str(z2)
-#' z <- marry(z1, z2)
+#' z <- dataset_merge(z1, z2)
 #' str(z)
 #'
 #' @importFrom dplyr anti_join bind_rows
 #'
 #' @author Christoph Sax
 #' @export
-marry <- function(x, y) {
+dataset_merge <- function(x, y) {
   # only use those series from y that are not in x
   newdata <- anti_join(y$data, x$data, by = setdiff(colnames(x$data), "value"))
   newdata <- bind_rows(newdata, x$data)
@@ -36,7 +38,7 @@ marry <- function(x, y) {
   z$data <- newdata
   z$meta$hierarchy <- merge_two_lists(y$meta$hierarchy, x$meta$hierarchy)
   z$meta$labels <- merge_two_lists(y$meta$labels, x$meta$labels)
-  test_swissdata(z)
+  dataset_validate(z)
   z
 }
 
