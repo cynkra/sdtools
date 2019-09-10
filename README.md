@@ -43,7 +43,7 @@ hierarchy_reorder()    # reorders the levels under specified parent
 #### Combining ####
 
 ```r
-marry()                # combines two swissdata objects into one
+dataset_merge()        # combines two swissdata objects into one
 ```
 
 ## Installation ##
