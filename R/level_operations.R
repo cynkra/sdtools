@@ -31,7 +31,6 @@
 #' str(z)
 #'
 #' @importFrom dplyr filter sym
-#' @importFrom magrittr %>%
 #'
 #' @author Karolis Koncevičius
 #' @name level_operations
@@ -40,9 +39,7 @@ level_drop <- function(x, dim, level) {
   stopifnot(dim %in% setdiff(names(x$data), c("date", "value")))
   stopifnot(level %in% x$data[[dim]])
 
-  x$data <-
-    x$data %>%
-    filter(!! sym(dim) != level)
+  x$data <- filter(x$data, !! sym(dim) != level)
 
   hpos <- find_list_by_name(x$meta$hierarchy[[dim]], level)
   x$meta$hierarchy[[dim]][[hpos]] <- NULL
@@ -57,22 +54,21 @@ level_drop <- function(x, dim, level) {
 level_rename <- function(x, dim, level, name) {
   stopifnot(dim %in% setdiff(names(x$data), c("date", "value")))
   stopifnot(level %in% x$data[[dim]])
+  stopifnot(!(name %in% names(x$meta$labels[[dim]])))
 
-  x$data[[dim]] <- replace(x$data[[dim]], x$data[[dim]]==level, name)
+  x$data[[dim]][x$data[[dim]]==level] <- name
 
-  hpos <- find_list_by_name(x$meta$hierarchy[[dim]], level)
+  names(x$meta$labels[[dim]])[names(x$meta$labels[[dim]]) == level] <- name
+
+  hierarchy <- x$meta$hierarchy[[dim]]
+  hpos <- find_list_by_name(hierarchy, level)
   if(length(hpos) == 1) {
-    hpos <- TRUE
+    names(hierarchy)[names(hierarchy) == level] <- name
   } else {
-    hpos <- utils::head(hpos, -1)
+    hpos <- hpos[-length(hpos)]
+    names(hierarchy[[hpos]])[names(hierarchy[[hpos]]) == level] <- name
   }
-  names(x$meta$hierarchy[[dim]][[hpos]]) <-
-    names(x$meta$hierarchy[[dim]][[hpos]]) %>%
-    replace(.==level, name)
-
-  names(x$meta$labels[[dim]]) <-
-    names(x$meta$labels[[dim]]) %>%
-    replace(.==level, name)
+  x$meta$hierarchy[[dim]] <- hierarchy
 
   x
 }

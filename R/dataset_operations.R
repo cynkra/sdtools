@@ -25,16 +25,13 @@
 #' str(z)
 #'
 #' @importFrom dplyr anti_join bind_rows
-#' @importFrom magrittr %>%
 #'
 #' @author Christoph Sax
 #' @export
 dataset_merge <- function(x, y) {
-  newdata <-
-    y$data %>%
-    # only use those series from y that are not in x
-    anti_join(x$data, by = setdiff(colnames(x$data), "value")) %>%
-    bind_rows(x$data)
+  # only use those series from y that are not in x
+  newdata <- anti_join(y$data, x$data, by = setdiff(colnames(x$data), "value"))
+  newdata <- bind_rows(newdata, x$data)
 
   z <- x
 
