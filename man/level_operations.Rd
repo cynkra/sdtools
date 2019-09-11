@@ -33,7 +33,8 @@ swissdata object by altering the \code{x$data}, \code{x$meta$hierarchy},
 \code{x$meta$labels}, and \code{x$meta$units} fields.
 
 When removing the dimension level using \code{level_drop} the corresponding rows
-from \code{x$data} are removed.
+from \code{x$data} are removed. If the dropped level had children it the hierarchy
+all the children are moved up one level to the parent of the dropped level.
 }
 \examples{
 
@@ -45,6 +46,8 @@ str(z)
 
 # drop existing level "new" from dimension "idx_type"
 z <- level_drop(z, dim = "idx_type", level = "new")
+str(z)
+z <- level_drop(z, dim = "idx_type", level = "sch")
 str(z)
 
 }

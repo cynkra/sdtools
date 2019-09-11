@@ -9,7 +9,8 @@
 #' `x$meta$labels`, and `x$meta$units` fields.
 #'
 #' When removing the dimension level using `level_drop` the corresponding rows
-#' from `x$data` are removed.
+#' from `x$data` are removed. If the dropped level had children it the hierarchy
+#' all the children are moved up one level to the parent of the dropped level.
 #'
 #' @param x swissdata object
 #' @param dim dimension name
@@ -29,6 +30,8 @@
 #' # drop existing level "new" from dimension "idx_type"
 #' z <- level_drop(z, dim = "idx_type", level = "new")
 #' str(z)
+#' z <- level_drop(z, dim = "idx_type", level = "sch")
+#' str(z)
 #'
 #' @importFrom dplyr filter sym
 #'
@@ -41,8 +44,18 @@ level_drop <- function(x, dim, level) {
 
   x$data <- filter(x$data, !! sym(dim) != level)
 
-  hpos <- find_list_by_name(x$meta$hierarchy[[dim]], level)
-  x$meta$hierarchy[[dim]][[hpos]] <- NULL
+  hierarchy <- x$meta$hierarchy[[dim]]
+  hpos <- find_list_by_name(hierarchy, level)
+  children <- hierarchy[[hpos]]
+  if(length(hpos) == 1) {
+    hierarchy <- append(hierarchy, children, after = hpos)
+  } else {
+    pind <- hpos[-length(hpos)]
+    hierarchy[[pind]] <- append(hierarchy[[pind]], children, after = hpos[length(hpos)])
+  }
+  hierarchy[[hpos]] <- NULL
+  x$meta$hierarchy[[dim]] <- hierarchy
+
   x$meta$labels[[dim]][level] <- NULL
 
   x
