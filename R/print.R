@@ -60,11 +60,11 @@ str.swissdata <- function(object, language = 'en', ...) {
     lab <- paste(dm, "-", labels$dimnames[[dm]][[language]])
     label.hierarchy[[pos]] <- list(lab, label.hierarchy[[pos]])
     for(lv in names(labels[[dm]])) {
-      pos <- find_list_by_name(label.hierarchy, lv)
-      pad <- (length(find_list_by_name(hierarchy, lv)) - 1) * 2
+      pos <- find_list_by_name(label.hierarchy[[dm]], lv)
+      pad <- length(find_list_by_name(hierarchy[[dm]], lv)) * 2
       lab <- paste(lv, "-", labels[[dm]][[lv]][[language]])
       lab <- paste0(strrep(" ", pad), lab)
-      label.hierarchy[[pos]] <- list(lab, label.hierarchy[[pos]])
+      label.hierarchy[[dm]][[pos]] <- list(lab, label.hierarchy[[dm]][[pos]])
     }
   }
 
