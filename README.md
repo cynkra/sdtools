@@ -72,7 +72,7 @@ This data is read from an open S3 bucket, and no authentification is required.
 To start, simply do:
 
 ```r
-sdtools::read_swissdata_s3("ch_comb_vacancies")
+sdtools::dataset_read_s3("ch_adecco_sjmi")
 ```
 
 `swissdata` is run twice on a server and the results are stored on a S3 bucket.
