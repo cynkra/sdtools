@@ -1,6 +1,6 @@
 Package: sdtools
 Title: Tools for Manipulating Swissdata Objects
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: c(
   person("Christoph", "Sax", email = "christoph@cynkra.com", role = c("aut", "cre")),
   person("Karolis", "Koncevi\u00e7ius", email = "karolis.koncevicius@gmail.com", role = "aut")

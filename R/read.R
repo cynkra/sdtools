@@ -14,32 +14,38 @@
 #' @examples
 #'
 #' tf <- tempfile()
-#' dataset_write_yaml(adecco, tf)
-#' dataset_read_yaml(file.path(tf, "ch_adecco_sjmi"))
+#' dataset_write(adecco, tf)
+#' dataset_read(file.path(tf, "ch_adecco_sjmi"))
 #'
 #' # read from s3
 #' dataset_read_s3("ch_adecco_sjmi", bucket = "dataseries")
 #' dataset_read_s3("ch_adecco_sjmi", bucket = "swissdata")
 #'
 #' @importFrom dplyr mutate mutate_at as_tibble
+#' @importFrom readr read_csv cols col_date col_double col_character
 #'
 #' @author Christoph Sax
 #' @name read
 #' @export
-dataset_read_yaml <- function(set_path, test = TRUE) {
+dataset_read <- function(set_path, test = TRUE) {
 
   set_path <- normalizePath(set_path, mustWork = TRUE)
 
   files <- list.files(set_path, full.names = TRUE)
-  file.yaml <- grep("yaml$", files, value = TRUE)
-  stopifnot(length(file.yaml) == 1)
+
+  file.yaml.or.json <- grep("(\\.yaml$)|(\\.json$)", files, value = TRUE)
+  stopifnot(length(file.yaml.or.json) == 1)
   file.csv <- grep("csv$", files, value = TRUE)
   stopifnot(length(file.csv) == 1)
 
-  set_id <- gsub(".yaml", "", basename(file.yaml))
+  set_id <- gsub("(\\.yaml$)|(\\.json$)", "", basename(file.yaml.or.json))
   stopifnot(identical(set_id, gsub(".csv", "", basename(file.csv))))
 
-  meta <- yaml::yaml.load_file(file.yaml)
+  if (grepl("\\.json$", file.yaml.or.json)) {
+    meta <- jsonlite::read_json(file.yaml.or.json)
+  } else {
+    meta <- yaml::yaml.load_file(file.yaml.or.json)
+  }
 
   # SNB Series have NA details, but should have no 'details' entry
   if (!is.null(meta$details) && is.null(meta$details[[1]])) {
@@ -58,10 +64,10 @@ dataset_read_yaml <- function(set_path, test = TRUE) {
   if (is.null(meta$units)) {
     meta$units <- list(all = list(en = " "))
   }
-  data <-   read_csv(file.csv, col_types = cols(
-    date = col_date(format = ""),
-    value = col_double(),
-    .default = col_character()
+  data <-   readr::read_csv(file.csv, col_types = cols(
+    date = readr::col_date(format = ""),
+    value = readr::col_double(),
+    .default = readr::col_character()
   ))
   id_cols <- setdiff(names(data), c("date", "value"))
   data <-
@@ -84,38 +90,14 @@ dataset_read_yaml <- function(set_path, test = TRUE) {
   z
 }
 
+
 #' @rdname read
 #' @export
-dataset_read_json <- function(set_path, test = TRUE) {
-
-  set_path <- normalizePath(set_path, mustWork = TRUE)
-
-  files <- list.files(set_path, full.names = TRUE)
-  file.json <- grep("json$", files, value = TRUE)
-  stopifnot(length(file.json) == 1)
-  file.csv <- grep("csv$", files, value = TRUE)
-  stopifnot(length(file.csv) == 1)
-
-  set_id <- gsub(".json", "", basename(file.json))
-  stopifnot(identical(set_id, gsub(".csv", "", basename(file.csv))))
-
-  meta <- jsonlite::read_json(file.json)
-  data <- as_tibble(data.table::fread(file.csv, colClasses=c(date = "Date", value = "numeric")))
-  id_cols <- setdiff(names(data), c("date", "value"))
-  data <-
-    mutate(mutate_at(data, id_cols, as.character), date = as.Date(date))
-
-  z <- list(
-    meta = dots_to_underscore(empty_list_to_null(meta)),
-    data = data,
-    set_id = gsub(".", "_", set_id, fixed = TRUE)
-  )
-
-  class(z) <- "swissdata"
-  if (test) ans <- dataset_validate(z)
-  message("successfully read: ", set_id)
-  z
+dataset_read_yaml <- function(set_path, test = TRUE) {
+  .Deprecated("dataset_read")
+  dataset_read(set_path, test = test)
 }
+
 
 #' @rdname read
 #' @export
@@ -130,7 +112,7 @@ dataset_read_s3 <- function(set_id, bucket = "swissdata", test = TRUE) {
 
   Map(utils::download.file, url = files, destfile = file.path(tdir, basename(files)))
 
-  ans <- dataset_read_yaml(tdir, test = test)
+  ans <- dataset_read(tdir, test = test)
   ans
 }
 

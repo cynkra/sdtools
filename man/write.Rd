@@ -2,10 +2,10 @@
 % Please edit documentation in R/write.R
 \name{write}
 \alias{write}
-\alias{dataset_write_yaml}
+\alias{dataset_write}
 \title{Write Swissdata Objects}
 \usage{
-dataset_write_yaml(x, path_out, test = TRUE)
+dataset_write(x, path_out, test = TRUE, type = c("json", "yaml"))
 }
 \arguments{
 \item{x}{swissdata object to be written}
@@ -13,6 +13,8 @@ dataset_write_yaml(x, path_out, test = TRUE)
 \item{path_out}{path for top-level directory for storing swissdata objects}
 
 \item{test}{should \code{dataset_validate()} be run before writing the object (default = TRUE)}
+
+\item{type}{format of meta data (\code{"json"} or \code{"yaml"})}
 }
 \value{
 If operation is successful the destination directory for the object is returned invisibly.
@@ -25,12 +27,10 @@ In this function the argument \code{path_out} specifies the top level directory.
 The directory containing all the files for the saved swissdata object will be stored within \code{path_out} (see examples).
 }
 \examples{
- z <- adecco
  root_dir <- tempdir()
- data_dir <- dataset_write_yaml(z, root_dir, test = FALSE)
- x <- dataset_read_yaml(data_dir)
- str(x)
- str(z)
+ data_dir <- dataset_write(adecco, root_dir)
+ x <- dataset_read(data_dir)
+ all.equal(x, adecco)
  # remove all created directories
  unlink(root_dir, recursive = TRUE)
 

@@ -9,11 +9,10 @@ List of available function.
 #### Reading and Writing ####
 
 ```r
-dataset_read_yaml()    # reads swissdata object stored in the form of yaml files
-dataset_read_json()    # reads swissdata object stored in the form of json files
+dataset_read()         # reads swissdata object from file system (YAML or JSON)
 dataset_read_s3()      # reads swissdata object from Amazon S3 bucket.
 
-dataset_write_yaml()   # saves swissdata object in the form of yaml files
+dataset_write()        # saves swissdata object to file system (YAML or JSON)
 ```
 
 #### Printing and Validating ####

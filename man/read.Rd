@@ -2,14 +2,14 @@
 % Please edit documentation in R/read.R
 \name{read}
 \alias{read}
+\alias{dataset_read}
 \alias{dataset_read_yaml}
-\alias{dataset_read_json}
 \alias{dataset_read_s3}
 \title{Download and Read Swissdata Objects}
 \usage{
-dataset_read_yaml(set_path, test = TRUE)
+dataset_read(set_path, test = TRUE)
 
-dataset_read_json(set_path, test = TRUE)
+dataset_read_yaml(set_path, test = TRUE)
 
 dataset_read_s3(set_id, bucket = "swissdata", test = TRUE)
 }
@@ -33,8 +33,8 @@ and Amazon Simple Storage Service (s3)
 \examples{
 
 tf <- tempfile()
-dataset_write_yaml(adecco, tf)
-dataset_read_yaml(file.path(tf, "ch_adecco_sjmi"))
+dataset_write(adecco, tf)
+dataset_read(file.path(tf, "ch_adecco_sjmi"))
 
 # read from s3
 dataset_read_s3("ch_adecco_sjmi", bucket = "dataseries")
