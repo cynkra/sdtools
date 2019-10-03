@@ -58,8 +58,11 @@ dataset_read_yaml <- function(set_path, test = TRUE) {
   if (is.null(meta$units)) {
     meta$units <- list(all = list(en = " "))
   }
-
-  data <- as_tibble(data.table::fread(file.csv, colClasses=c(date = "Date", value = "numeric")))
+  data <-   read_csv(file.csv, col_types = cols(
+    date = col_date(format = ""),
+    value = col_double(),
+    .default = col_character()
+  ))
   id_cols <- setdiff(names(data), c("date", "value"))
   data <-
     mutate(mutate_at(data, id_cols, as.character), date = as.Date(date))
