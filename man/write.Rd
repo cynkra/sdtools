@@ -3,9 +3,12 @@
 \name{write}
 \alias{write}
 \alias{dataset_write}
+\alias{dataset_write_yaml}
 \title{Write Swissdata Objects}
 \usage{
 dataset_write(x, path_out, test = TRUE, type = c("json", "yaml"))
+
+dataset_write_yaml(x, path_out, test = TRUE)
 }
 \arguments{
 \item{x}{swissdata object to be written}

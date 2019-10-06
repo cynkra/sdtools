@@ -44,3 +44,9 @@ dataset_write <- function(x, path_out, test = TRUE, type = c("json", "yaml")) {
   invisible(path_out_set)
 }
 
+#' @name write
+#' @export
+dataset_write_yaml <- function(x, path_out, test = TRUE) {
+  .Deprecated("dataset_write")
+  dataset_write(x, path_out, test = TRUE, type = "yaml")
+}
