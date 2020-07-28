@@ -3,8 +3,8 @@
 #' Creator funtion for swissdata objects. All  swissdata objects should be
 #' created by this function.
 #'
-#' @param data data
-#' @param meta meta
+#' @param data data, or URL
+#' @param meta meta, or URL
 #' @param test should `dataset_validate()` be run on the newly-read object (default = TRUE)
 #'
 #' @return An object of class swissdata
